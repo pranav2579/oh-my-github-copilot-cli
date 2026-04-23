@@ -1,0 +1,62 @@
+{
+  "name": "oh-my-copilot-cli",
+  "version": "0.0.1",
+  "description": "Multi-agent orchestration toolkit for GitHub Copilot CLI — agents, skills, MCP server, and hook extensions ported from oh-my-claudecode (MIT).",
+  "keywords": [
+    "github-copilot",
+    "copilot-cli",
+    "agents",
+    "skills",
+    "mcp",
+    "ai",
+    "tdd",
+    "orchestration"
+  ],
+  "homepage": "https://github.com/pranav2579/oh-my-copilot-cli#readme",
+  "bugs": {
+    "url": "https://github.com/pranav2579/oh-my-copilot-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranav2579/oh-my-copilot-cli.git"
+  },
+  "license": "MIT",
+  "author": "Pranav Tripathi",
+  "type": "commonjs",
+  "bin": {
+    "omcc": "bridge/cli.cjs",
+    "oh-my-copilot-cli": "bridge/cli.cjs"
+  },
+  "files": [
+    "bridge/",
+    ".github/agents/",
+    ".github/skills/",
+    ".github/extensions/",
+    ".github/copilot-instructions.md",
+    ".github/instructions/",
+    "mcp-server/dist/",
+    "mcp-server/package.json",
+    "scripts/",
+    "templates/",
+    "docs/",
+    "licenses/",
+    "AGENTS.md",
+    "LICENSE",
+    "LICENSE-THIRD-PARTY.md",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/build-mcp-server.mjs",
+    "validate": "node scripts/validate-frontmatter.mjs",
+    "test": "vitest run",
+    "lint": "echo 'lint placeholder'",
+    "prepublishOnly": "npm run build && npm run validate && npm test"
+  },
+  "devDependencies": {}
+}
