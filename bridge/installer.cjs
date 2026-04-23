@@ -178,7 +178,27 @@ function checkMcpToolUniqueness(mcpConfigPath) {
 
 function checkMcpBuilt() {
   const dist = path.join(PKG_ROOT, "mcp-server", "dist", "index.js");
-  return fs.existsSync(dist) ? { ok: true, note: dist } : { ok: false, note: `missing ${dist}` };
+  if (!fs.existsSync(dist)) return { ok: false, note: `missing ${dist}` };
+  // Verify runtime SDK is resolvable from the package root (catches the
+  // "shipped dist but forgot to hoist @modelcontextprotocol/sdk" footgun).
+  try {
+    require.resolve("@modelcontextprotocol/sdk/server/mcp.js", { paths: [PKG_ROOT] });
+  } catch (e) {
+    return { ok: false, note: `dist present but @modelcontextprotocol/sdk not resolvable from ${PKG_ROOT}` };
+  }
+  // Spawn the server with a 2s timeout to confirm it boots without throwing.
+  const r = spawnSync(process.execPath, [dist], {
+    encoding: "utf8",
+    timeout: 2000,
+    input: "",
+  });
+  if (r.error && r.error.code !== "ETIMEDOUT") {
+    return { ok: false, note: `spawn failed: ${r.error.message}` };
+  }
+  if (r.status !== null && r.status !== 0) {
+    return { ok: false, note: `mcp server exited ${r.status}: ${(r.stderr || "").split("\n")[0]}` };
+  }
+  return { ok: true, note: dist };
 }
 
 function checkCopilotCli() {

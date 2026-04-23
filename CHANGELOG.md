@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] — MCP server runtime fix
+
+### Fixed
+
+- **Critical**: hoisted `@modelcontextprotocol/sdk` to root `dependencies` so the published tarball actually ships the SDK. In v0.1.0 the dep was only declared in `mcp-server/package.json`, which npm does not install for nested non-workspace `package.json` files — the MCP server crashed on first boot with `ERR_MODULE_NOT_FOUND: '@modelcontextprotocol/sdk'`.
+- `omcc doctor` now actually spawns the MCP server (with a 2s timeout) and verifies the SDK is resolvable, instead of only checking that `dist/index.js` exists. This would have caught the v0.1.0 regression.
+
+### Added
+
+- README install/E2E verification recipe and npm/license/node badges.
+
 ## [0.1.0] — first usable release
 
 ### Added

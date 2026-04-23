@@ -1,6 +1,6 @@
 {
   "name": "oh-my-github-copilot-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Multi-agent orchestration toolkit for GitHub Copilot CLI — agents, skills, MCP server, and hook extensions ported from oh-my-claudecode (MIT).",
   "keywords": [
     "github-copilot",
@@ -62,6 +62,7 @@
     "vitest": "^2.1.9"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "commander": "^12.1.0",
     "jsonc-parser": "^3.3.1"
   }
