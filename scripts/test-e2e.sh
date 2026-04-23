@@ -106,7 +106,9 @@ HOME="$SANDBOX_HOME" "$OMCC" init --target "$DRY_PROJ" --dry-run >/dev/null
 # -----------------------------------------------------------------------------
 step "7. omcc doctor — all checks"
 # -----------------------------------------------------------------------------
-DOCTOR="$(HOME="$SANDBOX_HOME" "$OMCC" doctor --target "$PROJ" 2>&1)"
+# Doctor exits 1 when any check fails (e.g., copilot CLI missing in CI),
+# so capture without letting set -e kill us; we inspect output ourselves.
+DOCTOR="$(HOME="$SANDBOX_HOME" "$OMCC" doctor --target "$PROJ" 2>&1 || true)"
 echo "$DOCTOR" | grep -q "✅ mcpBuilt"      && pass "doctor: mcpBuilt"      || fail "doctor: mcpBuilt missing"
 echo "$DOCTOR" | grep -q "✅ validator"     && pass "doctor: validator"     || fail "doctor: validator missing"
 echo "$DOCTOR" | grep -q "✅ mcpRegistered" && pass "doctor: mcpRegistered" || fail "doctor: mcpRegistered missing"

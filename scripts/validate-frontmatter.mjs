@@ -19,13 +19,13 @@ const REQUIRED_AGENT_FIELDS = ["name", "description"];
 const REQUIRED_SKILL_FIELDS = ["name", "description"];
 
 function parseFrontmatter(content, file) {
-  const m = content.match(/^---\n([\s\S]*?)\n---/);
+  const m = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!m) {
     ERRORS.push(`${file}: missing frontmatter`);
     return null;
   }
   const fm = {};
-  for (const line of m[1].split("\n")) {
+  for (const line of m[1].split(/\r?\n/)) {
     const km = line.match(/^([\w-]+):\s*(.*)$/);
     if (km) {
       let v = km[2].trim();
