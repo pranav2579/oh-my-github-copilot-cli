@@ -55,6 +55,7 @@
     "build": "node scripts/build-mcp-server.mjs",
     "validate": "node scripts/validate-frontmatter.mjs",
     "test": "vitest run",
+    "test:e2e": "bash scripts/test-e2e.sh",
     "lint": "echo 'lint placeholder'",
     "prepublishOnly": "npm run build && npm run validate && npm test"
   },

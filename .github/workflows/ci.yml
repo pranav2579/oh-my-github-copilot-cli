@@ -35,3 +35,6 @@ jobs:
         run: npx vitest run --config vitest.config.mjs
       - name: npm pack (size check)
         run: npm pack --dry-run
+      - name: E2E ship verification (tarball install + MCP boot + tool call)
+        if: runner.os != 'Windows'
+        run: bash scripts/test-e2e.sh
