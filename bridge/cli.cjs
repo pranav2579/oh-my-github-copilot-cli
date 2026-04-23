@@ -9,7 +9,7 @@ const { init, doctor, MCP_SERVER_NAME, PKG_ROOT } = require("./installer.cjs");
 const program = new Command();
 program
   .name("omcc")
-  .description("oh-my-copilot-cli — multi-agent toolkit for GitHub Copilot CLI")
+  .description("oh-my-github-copilot-cli — multi-agent toolkit for GitHub Copilot CLI")
   .version(pkg.version);
 
 function fmtCounts(c) {

@@ -10,7 +10,7 @@ Use this built-in reference when you need detailed OMCC catalog information that
 
 ## Agent Catalog
 
-Prefix: `oh-my-copilot-cli:`. See `agents/*.md` for full prompts.
+Prefix: `oh-my-github-copilot-cli:`. See `agents/*.md` for full prompts.
 
 - `explore` (haiku) — fast codebase search and mapping
 - `analyst` (opus) — requirements clarity and hidden constraints
@@ -65,7 +65,7 @@ Prefix: `oh-my-copilot-cli:`. See `agents/*.md` for full prompts.
 
 ## Skills Registry
 
-Invoke built-in workflows via `/oh-my-copilot-cli:<name>`.
+Invoke built-in workflows via `/oh-my-github-copilot-cli:<name>`.
 
 ### Workflow skills
 - `autopilot` — full autonomous execution from idea to working code

@@ -12,7 +12,7 @@ This is the orchestration layer on top of the built-in `tracer` agent. The goal 
 
 ## Good entry cases
 
-Use `/oh-my-copilot-cli:trace` when the problem is:
+Use `/oh-my-github-copilot-cli:trace` when the problem is:
 
 - ambiguous
 - causal

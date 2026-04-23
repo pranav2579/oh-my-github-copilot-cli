@@ -68,11 +68,11 @@ All augmentations delivered via `task` description context at spawn time. No mod
 | Step | Role | OMCC Agent | Model |
 |------|------|-----------|-------|
 | Research | Codebase analysis + hypothesis generation | general-purpose Agent | opus |
-| Planning | Hypothesis → structured plan | oh-my-copilot-cli:planner | opus |
-| Architecture Review | 6-point plan review | oh-my-copilot-cli:architect | opus |
-| Critic Review | Harness rule enforcement | oh-my-copilot-cli:critic | opus |
-| Execution | Implement plan + run benchmark | oh-my-copilot-cli:executor | opus |
-| Git Operations | Atomic merge/tag/PR | oh-my-copilot-cli:git-master | sonnet |
+| Planning | Hypothesis → structured plan | oh-my-github-copilot-cli:planner | opus |
+| Architecture Review | 6-point plan review | oh-my-github-copilot-cli:architect | opus |
+| Critic Review | Harness rule enforcement | oh-my-github-copilot-cli:critic | opus |
+| Execution | Implement plan + run benchmark | oh-my-github-copilot-cli:executor | opus |
+| Git Operations | Atomic merge/tag/PR | oh-my-github-copilot-cli:git-master | sonnet |
 | Goal Setup | Interactive interview | (directly in this skill) | N/A |
 | Benchmark Setup | Create + validate benchmark | custom agent | opus |
 
@@ -140,7 +140,7 @@ All git operations happen inside the target repo, NOT in the OMCC project root.
   ```
   git -C {repo_path} worktree add worktrees/round_{n}_executor_{id} -b experiment/round_{n}_executor_{id} improve/{goal_slug}
   ```
-- **Winner merges** via `oh-my-copilot-cli:git-master`:
+- **Winner merges** via `oh-my-github-copilot-cli:git-master`:
   ```
   Merge experiment/round_{n}_executor_{winner_id} into improve/{goal_slug} with --no-ff
   Message: "Iteration {n}: {hypothesis} (score: {before} → {after})"
@@ -202,7 +202,7 @@ If researcher fails, proceed with history only.
 
 ### Step 5 — Plan
 
-Spawn N `oh-my-copilot-cli:planner`(model=opus) agents in parallel (N = `number_of_agents` from settings).
+Spawn N `oh-my-github-copilot-cli:planner`(model=opus) agents in parallel (N = `number_of_agents` from settings).
 
 Pass in each planner's prompt:
 - Planner identity (planner_a, planner_b, planner_c...)
@@ -219,7 +219,7 @@ Expected output: Plan Document JSON → `<self-improve-root>/plans/round_{n}/pla
 
 For each plan, **sequentially** (architect before critic):
 
-**6a. Architecture Review**: Spawn `oh-my-copilot-cli:architect` with the plan + 6-point checklist:
+**6a. Architecture Review**: Spawn `oh-my-github-copilot-cli:architect` with the plan + 6-point checklist:
 1. Testability — is the hypothesis testable?
 2. Novelty — different from prior attempts?
 3. Scope — right-sized?
@@ -229,7 +229,7 @@ For each plan, **sequentially** (architect before critic):
 
 Architect verdict is **advisory only**.
 
-**6b. Critic Review**: Spawn `oh-my-copilot-cli:critic` with the plan + harness rules:
+**6b. Critic Review**: Spawn `oh-my-github-copilot-cli:critic` with the plan + harness rules:
 - H001: Exactly one hypothesis (reject if zero or multiple)
 - H002: No approach_family repetition streak >= 3
 - H003: Intra-round diversity (no two plans same family in same round)
@@ -242,7 +242,7 @@ If ALL plans rejected, log and skip to Step 9.
 
 ### Step 7 — Execute
 
-For each approved plan, spawn `oh-my-copilot-cli:executor`(model=opus) in parallel.
+For each approved plan, spawn `oh-my-github-copilot-cli:executor`(model=opus) in parallel.
 
 **Before spawning**, create worktree:
 ```
@@ -269,7 +269,7 @@ SKILL.md does this directly (not delegated):
 3. **Rank** by `benchmark_score` (respecting `benchmark_direction`)
 4. **Ranked-candidate loop** — for each candidate in rank order (best first):
    a. **No-regression check**: candidate score must improve or hold even vs `best_score`, respecting `benchmark_direction` (`higher_is_better`: score >= best_score; `lower_is_better`: score <= best_score)
-   b. **Merge** via `oh-my-copilot-cli:git-master`: `git merge experiment/round_{n}_executor_{id} --no-ff -m "Iteration {n}: {hypothesis} (score: {before} → {after})"`
+   b. **Merge** via `oh-my-github-copilot-cli:git-master`: `git merge experiment/round_{n}_executor_{id} --no-ff -m "Iteration {n}: {hypothesis} (score: {before} → {after})"`
    c. **Re-benchmark** on merged state to confirm improvement
    d. If re-benchmark **confirms** improvement: **accept winner**, break loop
    e. If re-benchmark shows **regression**: **revert merge** via `git -C {repo_path} reset --hard HEAD~1`, continue to next candidate
@@ -354,7 +354,7 @@ When the loop exits:
    Best Score: {best_score} (baseline: {baseline})
    Improvement: {delta} ({delta_pct}%)
    ```
-5. Run `/oh-my-copilot-cli:cancel` for clean state cleanup
+5. Run `/oh-my-github-copilot-cli:cancel` for clean state cleanup
 
 ---
 

@@ -13,9 +13,9 @@ The `swarm` compatibility alias was removed in #1131.
 ## Usage
 
 ```
-/oh-my-copilot-cli:team N:agent-type "task description"
-/oh-my-copilot-cli:team "task description"
-/oh-my-copilot-cli:team ralph "task description"
+/oh-my-github-copilot-cli:team N:agent-type "task description"
+/oh-my-github-copilot-cli:team "task description"
+/oh-my-github-copilot-cli:team ralph "task description"
 ```
 
 ### Parameters
@@ -185,7 +185,7 @@ The lead writes handoffs to `.omcc/handoffs/<stage-name>.md`.
 ### Resume and Cancel Semantics
 
 - **Resume:** restart from the last non-terminal stage using staged state + live task status. Read `.omcc/handoffs/` to recover stage transition context.
-- **Cancel:** `/oh-my-copilot-cli:cancel` requests teammate shutdown, waits for responses (best effort), marks phase `cancelled` with `active=false`, captures cancellation metadata, then deletes team resources and clears/preserves Team state per policy. Handoff files in `.omcc/handoffs/` are preserved for potential resume.
+- **Cancel:** `/oh-my-github-copilot-cli:cancel` requests teammate shutdown, waits for responses (best effort), marks phase `cancelled` with `active=false`, captures cancellation metadata, then deletes team resources and clears/preserves Team state per policy. Handoff files in `.omcc/handoffs/` are preserved for potential resume.
 - Terminal states are `complete`, `failed`, and `cancelled`.
 
 ## Workflow
@@ -328,7 +328,7 @@ Spawn N teammates using `task` with `team_name` and `name` parameters. Each team
 
 ```json
 {
-  "subagent_type": "oh-my-copilot-cli:executor",
+  "subagent_type": "oh-my-github-copilot-cli:executor",
   "team_name": "fix-ts-errors",
   "name": "worker-1",
   "prompt": "<worker-preamble + assigned tasks>"
@@ -647,7 +647,7 @@ The lead runs #1 (Codex security analysis), then #2 and #3 in parallel (Codex re
 
 For large ambiguous tasks, run analysis before team creation:
 
-1. Spawn `Task(subagent_type="oh-my-copilot-cli:planner", ...)` with task description + codebase context
+1. Spawn `Task(subagent_type="oh-my-github-copilot-cli:planner", ...)` with task description + codebase context
 2. Use the analysis to produce better task decomposition
 3. Create team and tasks with enriched context
 
@@ -753,7 +753,7 @@ When the user invokes `/team ralph`, says "team ralph", or combines both keyword
 ### Activation
 
 Team+Ralph activates when:
-1. User invokes `/team ralph "task"` or `/oh-my-copilot-cli:team ralph "task"`
+1. User invokes `/team ralph "task"` or `/oh-my-github-copilot-cli:team ralph "task"`
 2. Keyword detector finds both `team` and `ralph` in the prompt
 3. Hook detects `MAGIC KEYWORD: RALPH` alongside team context
 
@@ -781,7 +781,7 @@ state_write(mode="ralph", active=true, iteration=1, max_iterations=10, current_p
 1. Ralph outer loop starts (iteration 1)
 2. Team pipeline runs: `team-plan -> team-prd -> team-exec -> team-verify`
 3. If `team-verify` passes: Ralph runs architect verification (STANDARD tier minimum)
-4. If architect approves: both modes complete, run `/oh-my-copilot-cli:cancel`
+4. If architect approves: both modes complete, run `/oh-my-github-copilot-cli:cancel`
 5. If `team-verify` fails OR architect rejects: team enters `team-fix`, then loops back to `team-exec -> team-verify`
 6. If fix loop exceeds `max_fix_loops`: Ralph increments iteration and retries the full pipeline
 7. If Ralph exceeds `max_iterations`: terminal `failed` state
@@ -828,7 +828,7 @@ This prevents duplicate teams and allows graceful recovery from lead failures.
 
 ## Cancellation
 
-The `/oh-my-copilot-cli:cancel` skill handles team cleanup:
+The `/oh-my-github-copilot-cli:cancel` skill handles team cleanup:
 
 1. Read team state via `state_read(mode="team")` to get `team_name` and `linked_ralph`
 2. Send `shutdown_request` to all active teammates (from `config.json` members)
@@ -976,7 +976,7 @@ On successful completion:
    ```
    state_clear(mode="ralph")
    ```
-3. Or run `/oh-my-copilot-cli:cancel` which handles all cleanup automatically.
+3. Or run `/oh-my-github-copilot-cli:cancel` which handles all cleanup automatically.
 
 **IMPORTANT:** Call `TeamDelete` only AFTER all teammates have been shut down. `TeamDelete` will fail if active members (besides the lead) still exist in the config.
 

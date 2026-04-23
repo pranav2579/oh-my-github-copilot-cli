@@ -5,7 +5,7 @@ description: Manage local skills - list, add, remove, search, edit, setup wizard
 
 # Skill Management CLI
 
-Meta-skill for managing oh-my-copilot-cli skills via CLI-like commands.
+Meta-skill for managing oh-my-github-copilot-cli skills via CLI-like commands.
 
 ## Subcommands
 
@@ -21,7 +21,7 @@ Show all available skills organized by scope.
 5. Display in organized table format:
 
 ```
-BUILT-IN SKILLS (bundled with oh-my-copilot-cli):
+BUILT-IN SKILLS (bundled with oh-my-github-copilot-cli):
 | Name              | Description                    | Scope    |
 |-------------------|--------------------------------|----------|
 | visual-verdict    | Structured visual QA verdicts  | built-in |
@@ -41,7 +41,7 @@ PROJECT SKILLS (.omcc/skills/):
 
 **Fallback:** If quality/usage stats not available, show "N/A"
 
-**Built-in skill note:** Built-in skills are bundled with oh-my-copilot-cli and are discoverable/readable, but not removed or edited through `/skill remove` or `/skill edit`.
+**Built-in skill note:** Built-in skills are bundled with oh-my-github-copilot-cli and are discoverable/readable, but not removed or edited through `/skill remove` or `/skill edit`.
 
 ---
 
@@ -92,7 +92,7 @@ argument-hint: "<args>"
 ## Examples
 
 ```
-/oh-my-copilot-cli:<name> example-arg
+/oh-my-github-copilot-cli:<name> example-arg
 ```
 
 ## Notes
@@ -709,9 +709,9 @@ How to work with this integration correctly:
 
 When invoked with an argument, skip the interactive wizard:
 
-- `/oh-my-copilot-cli:skill list` - Show detailed skill inventory
-- `/oh-my-copilot-cli:skill add` - Start skill creation (invoke learner)
-- `/oh-my-copilot-cli:skill scan` - Scan both skill directories
+- `/oh-my-github-copilot-cli:skill list` - Show detailed skill inventory
+- `/oh-my-github-copilot-cli:skill add` - Start skill creation (invoke learner)
+- `/oh-my-github-copilot-cli:skill scan` - Scan both skill directories
 
 ### Interactive Mode
 
@@ -757,16 +757,16 @@ Good skills are:
 
 ## Related Skills
 
-- `/oh-my-copilot-cli:learner` - Extract a skill from current conversation
-- `/oh-my-copilot-cli:note` - Save quick notes (less formal than skills)
-- `/oh-my-copilot-cli:deepinit` - Generate AGENTS.md codebase hierarchy
+- `/oh-my-github-copilot-cli:learner` - Extract a skill from current conversation
+- `/oh-my-github-copilot-cli:note` - Save quick notes (less formal than skills)
+- `/oh-my-github-copilot-cli:deepinit` - Generate AGENTS.md codebase hierarchy
 
 ---
 
 ## Example Session
 
 ```
-> /oh-my-copilot-cli:skill list
+> /oh-my-github-copilot-cli:skill list
 
 Checking skill directories...
 ✓ User skills directory exists: ~/.claude/skills/omcc-learned/
@@ -809,7 +809,7 @@ What would you like to do?
 
 ## Tips for Users
 
-- Run `/oh-my-copilot-cli:skill list` periodically to review your skill library
+- Run `/oh-my-github-copilot-cli:skill list` periodically to review your skill library
 - After solving a tricky bug, immediately run learner to capture it
 - Use project-level skills for codebase-specific knowledge
 - Use user-level skills for general patterns that apply everywhere
@@ -830,9 +830,9 @@ What would you like to do?
 
 ## Related Skills
 
-- `/oh-my-copilot-cli:learner` - Extract a skill from current conversation
-- `/oh-my-copilot-cli:note` - Save quick notes (less formal than skills)
-- `/oh-my-copilot-cli:deepinit` - Generate AGENTS.md codebase hierarchy
+- `/oh-my-github-copilot-cli:learner` - Extract a skill from current conversation
+- `/oh-my-github-copilot-cli:note` - Save quick notes (less formal than skills)
+- `/oh-my-github-copilot-cli:deepinit` - Generate AGENTS.md codebase hierarchy
 
 ---
 

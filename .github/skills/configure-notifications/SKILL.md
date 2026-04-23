@@ -244,9 +244,9 @@ You can also set these via environment variables:
   OMC_TELEGRAM_BOT_TOKEN=123456789:ABCdefGHI...
   OMC_TELEGRAM_CHAT_ID=123456789
 
-To reconfigure: /oh-my-copilot-cli:configure-notifications telegram
-To configure Discord: /oh-my-copilot-cli:configure-notifications discord
-To configure Slack: /oh-my-copilot-cli:configure-notifications slack
+To reconfigure: /oh-my-github-copilot-cli:configure-notifications telegram
+To configure Discord: /oh-my-github-copilot-cli:configure-notifications discord
+To configure Slack: /oh-my-github-copilot-cli:configure-notifications slack
 ```
 
 ### Environment Variable Alternative
@@ -486,9 +486,9 @@ You can also set these via environment variables:
   OMC_DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
   OMC_DISCORD_MENTION=<@1465264645320474637>
 
-To reconfigure: /oh-my-copilot-cli:configure-notifications discord
-To configure Telegram: /oh-my-copilot-cli:configure-notifications telegram
-To configure Slack: /oh-my-copilot-cli:configure-notifications slack
+To reconfigure: /oh-my-github-copilot-cli:configure-notifications discord
+To configure Telegram: /oh-my-github-copilot-cli:configure-notifications telegram
+To configure Slack: /oh-my-github-copilot-cli:configure-notifications slack
 ```
 
 ### Environment Variable Alternative
@@ -733,9 +733,9 @@ You can also set these via environment variables:
   OMC_SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
   OMC_SLACK_MENTION=<@U1234567890>
 
-To reconfigure: /oh-my-copilot-cli:configure-notifications slack
-To configure Discord: /oh-my-copilot-cli:configure-notifications discord
-To configure Telegram: /oh-my-copilot-cli:configure-notifications telegram
+To reconfigure: /oh-my-github-copilot-cli:configure-notifications slack
+To configure Discord: /oh-my-github-copilot-cli:configure-notifications discord
+To configure Telegram: /oh-my-github-copilot-cli:configure-notifications telegram
 ```
 
 ### Environment Variable Alternative
@@ -934,7 +934,7 @@ Offer to send a test notification with the new template.
 
 ## Related
 
-- `/oh-my-copilot-cli:configure-openclaw` — Configure OpenClaw gateway integration
+- `/oh-my-github-copilot-cli:configure-openclaw` — Configure OpenClaw gateway integration
 
 ---
 

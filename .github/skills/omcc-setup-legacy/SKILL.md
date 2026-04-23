@@ -1,6 +1,6 @@
 ---
 name: omcc-setup-legacy
-description: Install or refresh oh-my-copilot-cli for plugin, npm, and local-dev setups from the canonical setup flow
+description: Install or refresh oh-my-github-copilot-cli for plugin, npm, and local-dev setups from the canonical setup flow
 ---
 
 # OMCC Setup
@@ -15,7 +15,7 @@ Note: All `~/.claude/...` paths in this guide respect `CLAUDE_CONFIG_DIR` when t
 
 Choose this setup flow when the user wants to **install, refresh, or repair OMCC itself**.
 
-- Marketplace/plugin install users should land here after `/plugin install oh-my-copilot-cli`
+- Marketplace/plugin install users should land here after `/plugin install oh-my-github-copilot-cli`
 - npm users should land here after `npm i -g oh-my-claude-sisyphus@latest`
 - local-dev and worktree users should land here after updating the checked-out repo and rerunning setup
 
@@ -33,14 +33,14 @@ Check for flags in the user's invocation:
 When user runs with `--help`, display this and stop:
 
 ```
-OMCC Setup - Configure oh-my-copilot-cli
+OMCC Setup - Configure oh-my-github-copilot-cli
 
 USAGE:
-  /oh-my-copilot-cli:omcc-setup           Run initial setup wizard (or update if already configured)
-  /oh-my-copilot-cli:omcc-setup --local   Configure local project (.claude/CLAUDE.md)
-  /oh-my-copilot-cli:omcc-setup --global  Configure global settings (~/.claude/CLAUDE.md)
-  /oh-my-copilot-cli:omcc-setup --force   Force full setup wizard even if already configured
-  /oh-my-copilot-cli:omcc-setup --help    Show this help
+  /oh-my-github-copilot-cli:omcc-setup           Run initial setup wizard (or update if already configured)
+  /oh-my-github-copilot-cli:omcc-setup --local   Configure local project (.claude/CLAUDE.md)
+  /oh-my-github-copilot-cli:omcc-setup --global  Configure global settings (~/.claude/CLAUDE.md)
+  /oh-my-github-copilot-cli:omcc-setup --force   Force full setup wizard even if already configured
+  /oh-my-github-copilot-cli:omcc-setup --help    Show this help
 
 MODES:
   Initial Setup (no flags)
@@ -73,12 +73,12 @@ MODES:
     - Use when you want to reconfigure preferences
 
 EXAMPLES:
-  /oh-my-copilot-cli:omcc-setup           # First time setup (or update CLAUDE.md if configured)
-  /oh-my-copilot-cli:omcc-setup --local   # Update this project
-  /oh-my-copilot-cli:omcc-setup --global  # Update all projects
-  /oh-my-copilot-cli:omcc-setup --force   # Re-run full setup wizard
+  /oh-my-github-copilot-cli:omcc-setup           # First time setup (or update CLAUDE.md if configured)
+  /oh-my-github-copilot-cli:omcc-setup --local   # Update this project
+  /oh-my-github-copilot-cli:omcc-setup --global  # Update all projects
+  /oh-my-github-copilot-cli:omcc-setup --force   # Re-run full setup wizard
 
-For more info: https://github.com/Yeachan-Heo/oh-my-copilot-cli
+For more info: https://github.com/Yeachan-Heo/oh-my-github-copilot-cli
 ```
 
 ## Pre-Setup Check: Already Configured?
@@ -175,13 +175,13 @@ Execute phases sequentially. For each phase, read the corresponding file and fol
 
 ## Keeping Up to Date
 
-After installing oh-my-copilot-cli updates (via npm or plugin update):
+After installing oh-my-github-copilot-cli updates (via npm or plugin update):
 
-**Automatic**: Just run `/oh-my-copilot-cli:omcc-setup` - it will detect you've already configured and offer a quick "Update CLAUDE.md only" option that skips the full wizard.
+**Automatic**: Just run `/oh-my-github-copilot-cli:omcc-setup` - it will detect you've already configured and offer a quick "Update CLAUDE.md only" option that skips the full wizard.
 
 **Manual options**:
-- `/oh-my-copilot-cli:omcc-setup --local` to update project config only
-- `/oh-my-copilot-cli:omcc-setup --global` to update global config only
-- `/oh-my-copilot-cli:omcc-setup --force` to re-run the full wizard (reconfigure preferences)
+- `/oh-my-github-copilot-cli:omcc-setup --local` to update project config only
+- `/oh-my-github-copilot-cli:omcc-setup --global` to update global config only
+- `/oh-my-github-copilot-cli:omcc-setup --force` to re-run the full wizard (reconfigure preferences)
 
 This ensures you have the newest features and agent configurations without the token cost of repeating the full setup.

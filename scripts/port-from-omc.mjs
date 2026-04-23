@@ -23,8 +23,8 @@ const RENAMES = {
 
 const TEXT_REPLACEMENTS = [
   // Branding (case-sensitive, ordered most-specific first)
-  ["oh-my-claudecode", "oh-my-copilot-cli"],
-  ["Yeachan-Heo/oh-my-claudecode", "pranav2579/oh-my-copilot-cli"],
+  ["oh-my-claudecode", "oh-my-github-copilot-cli"],
+  ["Yeachan-Heo/oh-my-claudecode", "pranav2579/oh-my-github-copilot-cli"],
   ["Yeachan Heo", "Pranav Tripathi"],
   // Don't blindly map "Claude Code" → "Copilot CLI" because it would corrupt
   // sentences. Phase 2 does the per-prompt adaptation.

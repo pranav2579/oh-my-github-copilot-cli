@@ -1,4 +1,4 @@
-# Contributing to oh-my-copilot-cli
+# Contributing to oh-my-github-copilot-cli
 
 Thank you for considering a contribution!
 

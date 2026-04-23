@@ -15,16 +15,16 @@ Note: All `~/.claude/...` paths in this guide respect `CLAUDE_CONFIG_DIR` when t
 
 | Command | Description |
 |---------|-------------|
-| `/oh-my-copilot-cli:hud` | Show current HUD status (auto-setup if needed) |
-| `/oh-my-copilot-cli:hud setup` | Install/repair HUD statusline |
-| `/oh-my-copilot-cli:hud minimal` | Switch to minimal display |
-| `/oh-my-copilot-cli:hud focused` | Switch to focused display (default) |
-| `/oh-my-copilot-cli:hud full` | Switch to full display |
-| `/oh-my-copilot-cli:hud status` | Show detailed HUD status |
+| `/oh-my-github-copilot-cli:hud` | Show current HUD status (auto-setup if needed) |
+| `/oh-my-github-copilot-cli:hud setup` | Install/repair HUD statusline |
+| `/oh-my-github-copilot-cli:hud minimal` | Switch to minimal display |
+| `/oh-my-github-copilot-cli:hud focused` | Switch to focused display (default) |
+| `/oh-my-github-copilot-cli:hud full` | Switch to full display |
+| `/oh-my-github-copilot-cli:hud status` | Show detailed HUD status |
 
 ## Auto-Setup
 
-When you run `/oh-my-copilot-cli:hud` or `/oh-my-copilot-cli:hud setup`, the system will automatically:
+When you run `/oh-my-github-copilot-cli:hud` or `/oh-my-github-copilot-cli:hud setup`, the system will automatically:
 1. Check if `~/.claude/hud/omcc-hud.mjs` exists
 2. Check if `statusLine` is configured in `~/.claude/settings.json`
 3. If missing, create the HUD wrapper script and configure settings
@@ -41,7 +41,7 @@ node -e "const p=require('path'),f=require('fs'),d=process.env.CLAUDE_CONFIG_DIR
 
 **Step 2:** Verify the plugin is installed:
 ```bash
-node -e "const p=require('path'),f=require('fs'),d=process.env.CLAUDE_CONFIG_DIR||p.join(require('os').homedir(),'.claude'),b=p.join(d,'plugins','cache','omc','oh-my-copilot-cli');try{const v=f.readdirSync(b).filter(x=>/^\d/.test(x)).sort((a,c)=>a.localeCompare(c,void 0,{numeric:true}));if(v.length===0){console.log('Plugin not installed - run: /plugin install oh-my-copilot-cli');process.exit()}const l=v[v.length-1],h=p.join(b,l,'dist','hud','index.js');console.log('Version:',l);console.log(f.existsSync(h)?'READY':'NOT_FOUND - try reinstalling: /plugin install oh-my-copilot-cli')}catch{console.log('Plugin not installed - run: /plugin install oh-my-copilot-cli')}"
+node -e "const p=require('path'),f=require('fs'),d=process.env.CLAUDE_CONFIG_DIR||p.join(require('os').homedir(),'.claude'),b=p.join(d,'plugins','cache','omc','oh-my-github-copilot-cli');try{const v=f.readdirSync(b).filter(x=>/^\d/.test(x)).sort((a,c)=>a.localeCompare(c,void 0,{numeric:true}));if(v.length===0){console.log('Plugin not installed - run: /plugin install oh-my-github-copilot-cli');process.exit()}const l=v[v.length-1],h=p.join(b,l,'dist','hud','index.js');console.log('Version:',l);console.log(f.existsSync(h)?'READY':'NOT_FOUND - try reinstalling: /plugin install oh-my-github-copilot-cli')}catch{console.log('Plugin not installed - run: /plugin install oh-my-github-copilot-cli')}"
 ```
 
 **Step 3:** If omcc-hud.mjs is MISSING or argument is `setup`, install the HUD wrapper and its dependency from the canonical template:
@@ -119,7 +119,7 @@ Shows all relevant elements:
 ### Full
 Shows everything including multi-line agent details:
 ```
-[OMCC] repo:oh-my-copilot-cli branch:main | ralph:3/10 | US-002 (2/5) | ultrawork | ctx:[████░░]67% | agents:3 | bg:3/5 | todos:2/5
+[OMCC] repo:oh-my-github-copilot-cli branch:main | ralph:3/10 | US-002 (2/5) | ultrawork | ctx:[████░░]67% | agents:3 | bg:3/5 | todos:2/5
 ├─ O architect    2m   analyzing architecture patterns...
 ├─ e explore     45s   searching for test files
 └─ s executor     1m   implementing validation logic
@@ -231,11 +231,11 @@ When `safeMode` is `true` (default), the HUD strips ANSI codes and uses ASCII-on
 ## Troubleshooting
 
 If the HUD is not showing:
-1. Run `/oh-my-copilot-cli:hud setup` to auto-install and configure
+1. Run `/oh-my-github-copilot-cli:hud setup` to auto-install and configure
 2. Restart Claude Code after setup completes
-3. If still not working, run `/oh-my-copilot-cli:omcc-doctor` for full diagnostics
+3. If still not working, run `/oh-my-github-copilot-cli:omcc-doctor` for full diagnostics
 
-**Legacy string format migration:** Older OMCC versions wrote `statusLine` as a plain string (e.g., `"~/.claude/hud/omcc-hud.mjs"`). Modern Claude Code (v2.1+) requires an object format. Running the installer or `/oh-my-copilot-cli:hud setup` will auto-migrate legacy strings to the correct object format:
+**Legacy string format migration:** Older OMCC versions wrote `statusLine` as a plain string (e.g., `"~/.claude/hud/omcc-hud.mjs"`). Modern Claude Code (v2.1+) requires an object format. Running the installer or `/oh-my-github-copilot-cli:hud setup` will auto-migrate legacy strings to the correct object format:
 ```json
 {
   "statusLine": {

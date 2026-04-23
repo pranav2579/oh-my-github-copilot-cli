@@ -4,7 +4,7 @@ applyTo: "**"
 
 # OMCC — Copilot CLI instructions
 
-You are working in a repository that has the **oh-my-copilot-cli** payload installed. This means a curated set of custom agents, skills, hook extensions, and an MCP server (`omcc-mcp`) are available to you.
+You are working in a repository that has the **oh-my-github-copilot-cli** payload installed. This means a curated set of custom agents, skills, hook extensions, and an MCP server (`omcc-mcp`) are available to you.
 
 ## Available custom agents
 

@@ -10,15 +10,15 @@ Use OMCC's canonical advisor skill to route a prompt through the local Claude, C
 ## Usage
 
 ```bash
-/oh-my-copilot-cli:ask <claude|codex|gemini> <question or task>
+/oh-my-github-copilot-cli:ask <claude|codex|gemini> <question or task>
 ```
 
 Examples:
 
 ```bash
-/oh-my-copilot-cli:ask codex "review this patch from a security perspective"
-/oh-my-copilot-cli:ask gemini "suggest UX improvements for this flow"
-/oh-my-copilot-cli:ask claude "draft an implementation plan for issue #123"
+/oh-my-github-copilot-cli:ask codex "review this patch from a security perspective"
+/oh-my-github-copilot-cli:ask gemini "suggest UX improvements for this flow"
+/oh-my-github-copilot-cli:ask claude "draft an implementation plan for issue #123"
 ```
 
 ## Routing

@@ -5,12 +5,12 @@ description: Consensus planning entrypoint that auto-gates vague ralph/autopilot
 
 # Ralplan (Consensus Planning Alias)
 
-Ralplan is a shorthand alias for `/oh-my-copilot-cli:omcc-plan --consensus`. It triggers iterative planning with Planner, Architect, and Critic agents until consensus is reached, with **RALPLAN-DR structured deliberation** (short mode by default, deliberate mode for high-risk work).
+Ralplan is a shorthand alias for `/oh-my-github-copilot-cli:omcc-plan --consensus`. It triggers iterative planning with Planner, Architect, and Critic agents until consensus is reached, with **RALPLAN-DR structured deliberation** (short mode by default, deliberate mode for high-risk work).
 
 ## Usage
 
 ```
-/oh-my-copilot-cli:ralplan "task description"
+/oh-my-github-copilot-cli:ralplan "task description"
 ```
 
 ## Flags
@@ -23,7 +23,7 @@ Ralplan is a shorthand alias for `/oh-my-copilot-cli:omcc-plan --consensus`. It 
 ## Usage with interactive mode
 
 ```
-/oh-my-copilot-cli:ralplan --interactive "task description"
+/oh-my-github-copilot-cli:ralplan --interactive "task description"
 ```
 
 ## Behavior
@@ -31,7 +31,7 @@ Ralplan is a shorthand alias for `/oh-my-copilot-cli:omcc-plan --consensus`. It 
 This skill invokes the Plan skill in consensus mode:
 
 ```
-/oh-my-copilot-cli:omcc-plan --consensus <arguments>
+/oh-my-github-copilot-cli:omcc-plan --consensus <arguments>
 ```
 
 The consensus workflow:
@@ -54,7 +54,7 @@ The consensus workflow:
    f. If 5 iterations are reached without `APPROVE`, present the best version to the user
 6. On Critic approval *(--interactive only)*: If `--interactive` is set, use `AskUserQuestion` to present the plan with approval options (Approve and implement via team (Recommended) / Approve and execute via ralph / Clear context and implement / Request changes / Reject). Final plan must include ADR (Decision, Drivers, Alternatives considered, Why chosen, Consequences, Follow-ups). Otherwise, output the final plan and stop.
 7. *(--interactive only)* User chooses: Approve (team or ralph), Request changes, or Reject
-8. *(--interactive only)* On approval: invoke `Skill("oh-my-copilot-cli:team")` for parallel team execution (recommended) or `Skill("oh-my-copilot-cli:ralph")` for sequential execution -- never implement directly
+8. *(--interactive only)* On approval: invoke `Skill("oh-my-github-copilot-cli:team")` for parallel team execution (recommended) or `Skill("oh-my-github-copilot-cli:ralph")` for sequential execution -- never implement directly
 
 > **Important:** Steps 3 and 4 MUST run sequentially. Do NOT issue both agent Task calls in the same parallel batch. Always await the Architect result before issuing the Critic Task.
 

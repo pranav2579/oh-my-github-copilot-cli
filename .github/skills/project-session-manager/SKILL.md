@@ -18,7 +18,7 @@ aliases: [psm]
 
 Automate isolated development environments using git worktrees and tmux sessions with Claude Code. Enables parallel work across multiple tasks, projects, and repositories.
 
-Canonical slash command: `/oh-my-copilot-cli:project-session-manager` (alias: `/oh-my-copilot-cli:psm`).
+Canonical slash command: `/oh-my-github-copilot-cli:project-session-manager` (alias: `/oh-my-github-copilot-cli:psm`).
 
 ## Commands
 
@@ -49,8 +49,8 @@ Supported formats:
 {
   "aliases": {
     "omc": {
-      "repo": "Yeachan-Heo/oh-my-copilot-cli",
-      "local": "~/Workspace/oh-my-copilot-cli",
+      "repo": "Yeachan-Heo/oh-my-github-copilot-cli",
+      "local": "~/Workspace/oh-my-github-copilot-cli",
       "default_base": "main"
     }
   },
@@ -563,8 +563,8 @@ if [[ ! -f ~/.psm/projects.json ]]; then
 {
   "aliases": {
     "omc": {
-      "repo": "Yeachan-Heo/oh-my-copilot-cli",
-      "local": "~/Workspace/oh-my-copilot-cli",
+      "repo": "Yeachan-Heo/oh-my-github-copilot-cli",
+      "local": "~/Workspace/oh-my-github-copilot-cli",
       "default_base": "main"
     }
   },

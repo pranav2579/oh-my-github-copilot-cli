@@ -1,10 +1,10 @@
-# AGENTS.md — oh-my-copilot-cli
+# AGENTS.md — oh-my-github-copilot-cli
 
 This file provides cross-tool primary instructions for any AI agent working in this repository (Copilot CLI, Claude Code, Codex, Gemini, etc.).
 
 ## Project purpose
 
-`oh-my-copilot-cli` (OMCC, binary `omcc`) ships a multi-agent orchestration payload — custom agents, skills, MCP server, and JS hook extensions — for the terminal-based GitHub Copilot CLI. Content is ported from [`Yeachan-Heo/oh-my-claudecode`](https://github.com/Yeachan-Heo/oh-my-claudecode) (MIT) and adapted to the Copilot CLI tool surface.
+`oh-my-github-copilot-cli` (OMCC, binary `omcc`) ships a multi-agent orchestration payload — custom agents, skills, MCP server, and JS hook extensions — for the terminal-based GitHub Copilot CLI. Content is ported from [`Yeachan-Heo/oh-my-claudecode`](https://github.com/Yeachan-Heo/oh-my-claudecode) (MIT) and adapted to the Copilot CLI tool surface.
 
 ## Repository layout (target)
 

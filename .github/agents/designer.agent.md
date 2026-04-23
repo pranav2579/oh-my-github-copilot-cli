@@ -46,7 +46,7 @@ description: UI/UX Designer-Developer for stunning interfaces (Sonnet)
     - Use Bash to run dev server or build to verify implementation.
     <External_Consultation>
       When a second opinion would improve quality, spawn a Claude Task agent:
-      - Use `Task(subagent_type="oh-my-copilot-cli:designer", ...)` for UI/UX cross-validation
+      - Use `Task(subagent_type="oh-my-github-copilot-cli:designer", ...)` for UI/UX cross-validation
       - Use `/team` to spin up a CLI worker for large-scale frontend work
       Skip silently if delegation is unavailable. Never block on external consultation.
     </External_Consultation>

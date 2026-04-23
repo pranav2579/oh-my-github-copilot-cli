@@ -13,9 +13,9 @@ Spawn N CLI worker processes in tmux panes to execute tasks in parallel. Support
 ## Usage
 
 ```bash
-/oh-my-copilot-cli:omcc-teams N:claude "task description"
-/oh-my-copilot-cli:omcc-teams N:codex "task description"
-/oh-my-copilot-cli:omcc-teams N:gemini "task description"
+/oh-my-github-copilot-cli:omcc-teams N:claude "task description"
+/oh-my-github-copilot-cli:omcc-teams N:codex "task description"
+/oh-my-github-copilot-cli:omcc-teams N:gemini "task description"
 ```
 
 ### Parameters
@@ -72,7 +72,7 @@ Validate before decomposing or running anything:
 
 - Reject unsupported agent types up front. `/omcc-teams` only supports **`claude`**, **`codex`**, and **`gemini`**.
 - If the user asks for an unsupported type such as `expert`, explain that `/omcc-teams` launches external CLI workers only.
-- For native Claude Code team agents/roles, direct them to **`/oh-my-copilot-cli:team`** instead.
+- For native Claude Code team agents/roles, direct them to **`/oh-my-github-copilot-cli:team`** instead.
 
 ### Phase 2: Decompose task
 
@@ -174,7 +174,7 @@ If encountered, switch to `omc team ...` CLI commands.
 | ---------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------- |
 | `not inside tmux`            | Requested in-place pane topology from a non-tmux surface | Start tmux and rerun, or let `omc team` use its detached-session fallback           |
 | `cmux surface detected`      | Running inside cmux without `$TMUX` | Use the normal `omc team ...` flow; OMCC will launch a detached tmux session         |
-| `Unsupported agent type`     | Requested agent is not claude/codex/gemini | Use `claude`, `codex`, or `gemini`; for native Claude Code agents use `/oh-my-copilot-cli:team` |
+| `Unsupported agent type`     | Requested agent is not claude/codex/gemini | Use `claude`, `codex`, or `gemini`; for native Claude Code agents use `/oh-my-github-copilot-cli:team` |
 | `codex: command not found`   | Codex CLI not installed             | `npm install -g @openai/codex`                                                      |
 | `gemini: command not found`  | Gemini CLI not installed            | `npm install -g @google/gemini-cli`                                                 |
 | `Team <name> is not running` | stale or missing runtime state      | `omc team status <team-name>` then `omc team shutdown <team-name> --force` if stale |

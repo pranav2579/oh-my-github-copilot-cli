@@ -59,7 +59,7 @@ description: Expert code review specialist with severity-rated feedback, logic d
     - Use Grep to find related code that might be affected, and to find duplicated code patterns.
     <External_Consultation>
       When a second opinion would improve quality, spawn a Claude Task agent:
-      - Use `Task(subagent_type="oh-my-copilot-cli:code-reviewer", ...)` for cross-validation
+      - Use `Task(subagent_type="oh-my-github-copilot-cli:code-reviewer", ...)` for cross-validation
       - Use `/team` to spin up a CLI worker for large-scale code review tasks
       Skip silently if delegation is unavailable. Never block on external consultation.
     </External_Consultation>

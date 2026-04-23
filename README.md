@@ -1,4 +1,4 @@
-# oh-my-copilot-cli (omcc)
+# oh-my-github-copilot-cli (omcc)
 
 > Multi-agent orchestration toolkit for [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli) — a port of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) to the terminal-based Copilot CLI.
 
@@ -15,7 +15,7 @@
 ## Quick start
 
 ```bash
-npm install -g oh-my-copilot-cli   # not yet published
+npm install -g oh-my-github-copilot-cli   # not yet published
 cd your-project
 omcc init                          # scaffold .github/{agents,skills,extensions}/ + mcp-config
 copilot                            # your agents and skills are now available

@@ -1,5 +1,5 @@
 {
-  "name": "oh-my-copilot-cli",
+  "name": "oh-my-github-copilot-cli",
   "version": "0.1.0",
   "description": "Multi-agent orchestration toolkit for GitHub Copilot CLI — agents, skills, MCP server, and hook extensions ported from oh-my-claudecode (MIT).",
   "keywords": [
@@ -12,20 +12,20 @@
     "tdd",
     "orchestration"
   ],
-  "homepage": "https://github.com/pranav2579/oh-my-copilot-cli#readme",
+  "homepage": "https://github.com/pranav2579/oh-my-github-copilot-cli#readme",
   "bugs": {
-    "url": "https://github.com/pranav2579/oh-my-copilot-cli/issues"
+    "url": "https://github.com/pranav2579/oh-my-github-copilot-cli/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pranav2579/oh-my-copilot-cli.git"
+    "url": "git+https://github.com/pranav2579/oh-my-github-copilot-cli.git"
   },
   "license": "MIT",
   "author": "Pranav Tripathi",
   "type": "commonjs",
   "bin": {
     "omcc": "bridge/cli.cjs",
-    "oh-my-copilot-cli": "bridge/cli.cjs"
+    "oh-my-github-copilot-cli": "bridge/cli.cjs"
   },
   "files": [
     "bridge/",

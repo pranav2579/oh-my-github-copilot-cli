@@ -43,7 +43,7 @@ Rules:
 
 <Threshold_And_Loop>
 - Target pass threshold is **90+**.
-- If `score < 90`, continue editing and rerun `/oh-my-copilot-cli:visual-verdict` before any further visual review pass.
+- If `score < 90`, continue editing and rerun `/oh-my-github-copilot-cli:visual-verdict` before any further visual review pass.
 - Do **not** treat the visual task as complete until the next screenshot clears the threshold.
 </Threshold_And_Loop>
 

@@ -93,11 +93,11 @@ If both unavailable:
 ## Invocation
 
 ```bash
-/oh-my-copilot-cli:ccg <task description>
+/oh-my-github-copilot-cli:ccg <task description>
 ```
 
 Example:
 
 ```bash
-/oh-my-copilot-cli:ccg Review this PR - architecture/security via Codex and UX/readability via Gemini
+/oh-my-github-copilot-cli:ccg Review this PR - architecture/security via Codex and UX/readability via Gemini
 ```

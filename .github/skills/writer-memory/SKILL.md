@@ -23,25 +23,25 @@ All data persists in `.writer-memory/memory.json` for git-friendly collaboration
 
 | Command | Action |
 |---------|--------|
-| `/oh-my-copilot-cli:writer-memory init <project-name>` | Initialize new project memory |
-| `/oh-my-copilot-cli:writer-memory status` | Show memory overview (character count, scene count, etc) |
-| `/oh-my-copilot-cli:writer-memory char add <name>` | Add new character |
-| `/oh-my-copilot-cli:writer-memory char <name>` | View character details |
-| `/oh-my-copilot-cli:writer-memory char update <name> <field> <value>` | Update character field |
-| `/oh-my-copilot-cli:writer-memory char list` | List all characters |
-| `/oh-my-copilot-cli:writer-memory rel add <char1> <char2> <type>` | Add relationship |
-| `/oh-my-copilot-cli:writer-memory rel <char1> <char2>` | View relationship |
-| `/oh-my-copilot-cli:writer-memory rel update <char1> <char2> <event>` | Add relationship event |
-| `/oh-my-copilot-cli:writer-memory scene add <title>` | Add new scene |
-| `/oh-my-copilot-cli:writer-memory scene <id>` | View scene details |
-| `/oh-my-copilot-cli:writer-memory scene list` | List all scenes |
-| `/oh-my-copilot-cli:writer-memory theme add <name>` | Add theme |
-| `/oh-my-copilot-cli:writer-memory world set <field> <value>` | Set world attribute |
-| `/oh-my-copilot-cli:writer-memory query <question>` | Query memory naturally (Korean supported) |
-| `/oh-my-copilot-cli:writer-memory validate <character> <dialogue>` | Check if dialogue matches character tone |
-| `/oh-my-copilot-cli:writer-memory synopsis` | Generate emotion-focused synopsis |
-| `/oh-my-copilot-cli:writer-memory export` | Export full memory as readable markdown |
-| `/oh-my-copilot-cli:writer-memory backup` | Create manual backup |
+| `/oh-my-github-copilot-cli:writer-memory init <project-name>` | Initialize new project memory |
+| `/oh-my-github-copilot-cli:writer-memory status` | Show memory overview (character count, scene count, etc) |
+| `/oh-my-github-copilot-cli:writer-memory char add <name>` | Add new character |
+| `/oh-my-github-copilot-cli:writer-memory char <name>` | View character details |
+| `/oh-my-github-copilot-cli:writer-memory char update <name> <field> <value>` | Update character field |
+| `/oh-my-github-copilot-cli:writer-memory char list` | List all characters |
+| `/oh-my-github-copilot-cli:writer-memory rel add <char1> <char2> <type>` | Add relationship |
+| `/oh-my-github-copilot-cli:writer-memory rel <char1> <char2>` | View relationship |
+| `/oh-my-github-copilot-cli:writer-memory rel update <char1> <char2> <event>` | Add relationship event |
+| `/oh-my-github-copilot-cli:writer-memory scene add <title>` | Add new scene |
+| `/oh-my-github-copilot-cli:writer-memory scene <id>` | View scene details |
+| `/oh-my-github-copilot-cli:writer-memory scene list` | List all scenes |
+| `/oh-my-github-copilot-cli:writer-memory theme add <name>` | Add theme |
+| `/oh-my-github-copilot-cli:writer-memory world set <field> <value>` | Set world attribute |
+| `/oh-my-github-copilot-cli:writer-memory query <question>` | Query memory naturally (Korean supported) |
+| `/oh-my-github-copilot-cli:writer-memory validate <character> <dialogue>` | Check if dialogue matches character tone |
+| `/oh-my-github-copilot-cli:writer-memory synopsis` | Generate emotion-focused synopsis |
+| `/oh-my-github-copilot-cli:writer-memory export` | Export full memory as readable markdown |
+| `/oh-my-github-copilot-cli:writer-memory backup` | Create manual backup |
 
 ## Memory Types
 
@@ -233,7 +233,7 @@ Writer Memory integrates with `.omcc/notepad.md`:
 ### With Architect Agent
 For complex character analysis:
 ```
-Task(subagent_type="oh-my-copilot-cli:architect",
+Task(subagent_type="oh-my-github-copilot-cli:architect",
      model="opus",
      prompt="Analyze 새랑's arc across all scenes...")
 ```

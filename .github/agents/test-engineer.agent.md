@@ -69,7 +69,7 @@ description: Test strategy, integration/e2e coverage, flaky test hardening, TDD 
     - Use lsp_diagnostics to verify test code compiles.
     <External_Consultation>
       When a second opinion would improve quality, spawn a Claude Task agent:
-      - Use `Task(subagent_type="oh-my-copilot-cli:test-engineer", ...)` for test strategy validation
+      - Use `Task(subagent_type="oh-my-github-copilot-cli:test-engineer", ...)` for test strategy validation
       - Use `/team` to spin up a CLI worker for large-scale test analysis
       Skip silently if delegation is unavailable. Never block on external consultation.
     </External_Consultation>

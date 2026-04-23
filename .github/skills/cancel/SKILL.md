@@ -29,7 +29,7 @@ Automatically detects which mode is active and cancels it:
 ## Usage
 
 ```
-/oh-my-copilot-cli:cancel
+/oh-my-github-copilot-cli:cancel
 ```
 
 Or say: "cancelomc", "stopomc"
@@ -41,7 +41,7 @@ The state management tools (`state_clear`, `state_read`, `state_write`, `state_l
 any state tool, you MUST first load all of them via `ToolSearch`:
 
 ```
-ToolSearch(query="select:mcp__plugin_oh-my-copilot-cli_t__state_clear,mcp__plugin_oh-my-copilot-cli_t__state_read,mcp__plugin_oh-my-copilot-cli_t__state_write,mcp__plugin_oh-my-copilot-cli_t__state_list_active,mcp__plugin_oh-my-copilot-cli_t__state_get_status")
+ToolSearch(query="select:mcp__plugin_oh-my-github-copilot-cli_t__state_clear,mcp__plugin_oh-my-github-copilot-cli_t__state_read,mcp__plugin_oh-my-github-copilot-cli_t__state_write,mcp__plugin_oh-my-github-copilot-cli_t__state_list_active,mcp__plugin_oh-my-github-copilot-cli_t__state_get_status")
 ```
 
 If `state_clear` is unavailable or fails, use this **bash fallback** as an **emergency
@@ -99,7 +99,7 @@ fi
 
 ## Auto-Detection
 
-`/oh-my-copilot-cli:cancel` follows the session-aware state contract:
+`/oh-my-github-copilot-cli:cancel` follows the session-aware state contract:
 - By default the command inspects the current session via `state_list_active` and `state_get_status`, navigating `.omcc/state/sessions/{sessionId}/…` to discover which mode is active.
 - When a session id is provided or already known, that session-scoped path is authoritative. Legacy files in `.omcc/state/*.json` are consulted only as a compatibility fallback if the session id is missing or empty.
 - Swarm is a shared SQLite/marker mode (`.omcc/state/swarm.db` / `.omcc/state/swarm-active.marker`) and is not session-scoped.
@@ -123,11 +123,11 @@ Active modes are still cancelled in dependency order:
 Use `--force` or `--all` when you need to erase every session plus legacy artifacts, e.g., to reset the workspace entirely.
 
 ```
-/oh-my-copilot-cli:cancel --force
+/oh-my-github-copilot-cli:cancel --force
 ```
 
 ```
-/oh-my-copilot-cli:cancel --all
+/oh-my-github-copilot-cli:cancel --all
 ```
 
 Steps under the hood:
@@ -185,7 +185,7 @@ fi
 The skill now relies on the session-aware state contract rather than hard-coded file paths:
 1. Call `state_list_active` to enumerate `.omcc/state/sessions/{sessionId}/…` and discover every active session.
 2. For each session id, call `state_get_status` to learn which mode is running (`autopilot`, `ralph`, `ultrawork`, etc.) and whether dependent modes exist.
-3. If a `session_id` was supplied to `/oh-my-copilot-cli:cancel`, skip legacy fallback entirely and operate solely within that session path; otherwise, consult legacy files in `.omcc/state/*.json` only if the state tools report no active session. Swarm remains a shared SQLite/marker mode outside session scoping.
+3. If a `session_id` was supplied to `/oh-my-github-copilot-cli:cancel`, skip legacy fallback entirely and operate solely within that session path; otherwise, consult legacy files in `.omcc/state/*.json` only if the state tools report no active session. Swarm remains a shared SQLite/marker mode outside session scoping.
 4. Any cancellation logic in this doc mirrors the dependency order discovered via state tools (autopilot → ralph → …).
 
 ### 3A. Force Mode (if --force or --all)
@@ -346,7 +346,7 @@ Mode-specific subsections below describe what extra cleanup each handler perform
 
 | Mode | State Preserved | Resume Command |
 |------|-----------------|----------------|
-| Autopilot | Yes (phase, files, spec, plan, verdicts) | `/oh-my-copilot-cli:autopilot` |
+| Autopilot | Yes (phase, files, spec, plan, verdicts) | `/oh-my-github-copilot-cli:autopilot` |
 | Ralph | No | N/A |
 | Ultrawork | No | N/A |
 | UltraQA | No | N/A |

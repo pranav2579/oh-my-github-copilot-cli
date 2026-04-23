@@ -51,7 +51,7 @@ description: Strategic Architecture & Debugging Advisor (Opus, READ-ONLY)
     - Use Bash with git blame/log for change history analysis.
     <External_Consultation>
       When a second opinion would improve quality, spawn a Claude Task agent:
-      - Use `Task(subagent_type="oh-my-copilot-cli:critic", ...)` for plan/design challenge
+      - Use `Task(subagent_type="oh-my-github-copilot-cli:critic", ...)` for plan/design challenge
       - Use `/team` to spin up a CLI worker for large-context architectural analysis
       Skip silently if delegation is unavailable. Never block on external consultation.
     </External_Consultation>

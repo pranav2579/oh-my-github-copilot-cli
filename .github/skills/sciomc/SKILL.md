@@ -19,20 +19,20 @@ Research is a multi-stage workflow that decomposes complex research goals into p
 ## Usage Examples
 
 ```
-/oh-my-copilot-cli:sciomc <goal>                    # Standard research with user checkpoints
-/oh-my-copilot-cli:sciomc AUTO: <goal>              # Fully autonomous until complete
-/oh-my-copilot-cli:sciomc status                    # Check current research session status
-/oh-my-copilot-cli:sciomc resume                    # Resume interrupted research session
-/oh-my-copilot-cli:sciomc list                      # List all research sessions
-/oh-my-copilot-cli:sciomc report <session-id>       # Generate report for session
+/oh-my-github-copilot-cli:sciomc <goal>                    # Standard research with user checkpoints
+/oh-my-github-copilot-cli:sciomc AUTO: <goal>              # Fully autonomous until complete
+/oh-my-github-copilot-cli:sciomc status                    # Check current research session status
+/oh-my-github-copilot-cli:sciomc resume                    # Resume interrupted research session
+/oh-my-github-copilot-cli:sciomc list                      # List all research sessions
+/oh-my-github-copilot-cli:sciomc report <session-id>       # Generate report for session
 ```
 
 ### Quick Examples
 
 ```
-/oh-my-copilot-cli:sciomc What are the performance characteristics of different sorting algorithms?
-/oh-my-copilot-cli:sciomc AUTO: Analyze authentication patterns in this codebase
-/oh-my-copilot-cli:sciomc How does the error handling work across the API layer?
+/oh-my-github-copilot-cli:sciomc What are the performance characteristics of different sorting algorithms?
+/oh-my-github-copilot-cli:sciomc AUTO: Analyze authentication patterns in this codebase
+/oh-my-github-copilot-cli:sciomc How does the error handling work across the API layer?
 ```
 
 ## Research Protocol
@@ -62,13 +62,13 @@ Fire independent stages in parallel via `task` tool:
 
 ```
 // Stage 1 - Simple data gathering
-Task(subagent_type="oh-my-copilot-cli:scientist", model="haiku", prompt="[RESEARCH_STAGE:1] Investigate...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="haiku", prompt="[RESEARCH_STAGE:1] Investigate...")
 
 // Stage 2 - Standard analysis
-Task(subagent_type="oh-my-copilot-cli:scientist", model="sonnet", prompt="[RESEARCH_STAGE:2] Analyze...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="sonnet", prompt="[RESEARCH_STAGE:2] Analyze...")
 
 // Stage 3 - Complex reasoning
-Task(subagent_type="oh-my-copilot-cli:scientist", model="opus", prompt="[RESEARCH_STAGE:3] Deep analysis of...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="opus", prompt="[RESEARCH_STAGE:3] Deep analysis of...")
 ```
 
 ### Smart Model Routing
@@ -98,7 +98,7 @@ After parallel execution completes, verify findings:
 
 ```
 // Cross-validation stage
-Task(subagent_type="oh-my-copilot-cli:scientist", model="sonnet", prompt="
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="sonnet", prompt="
 [RESEARCH_VERIFICATION]
 Cross-validate these findings for consistency:
 
@@ -144,12 +144,12 @@ Pending stages: {{PENDING_STAGES}}
 1. **Max Iterations:** 10 (configurable)
 2. **Continue until:** Promise tag emitted OR max iterations
 3. **State tracking:** Persist after each stage completion
-4. **Cancellation:** `/oh-my-copilot-cli:cancel` or "stop", "cancel"
+4. **Cancellation:** `/oh-my-github-copilot-cli:cancel` or "stop", "cancel"
 
 ### AUTO Mode Example
 
 ```
-/oh-my-copilot-cli:sciomc AUTO: Comprehensive security analysis of the authentication system
+/oh-my-github-copilot-cli:sciomc AUTO: Comprehensive security analysis of the authentication system
 
 [Decomposition]
 - Stage 1 (LOW): Enumerate auth-related files
@@ -179,9 +179,9 @@ When stages analyze different data sources:
 
 ```
 // All fire simultaneously
-Task(subagent_type="oh-my-copilot-cli:scientist", model="haiku", prompt="[STAGE:1] Analyze src/api/...")
-Task(subagent_type="oh-my-copilot-cli:scientist", model="haiku", prompt="[STAGE:2] Analyze src/utils/...")
-Task(subagent_type="oh-my-copilot-cli:scientist", model="haiku", prompt="[STAGE:3] Analyze src/components/...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="haiku", prompt="[STAGE:1] Analyze src/api/...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="haiku", prompt="[STAGE:2] Analyze src/utils/...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="haiku", prompt="[STAGE:3] Analyze src/components/...")
 ```
 
 ### Hypothesis Battery (Parallel)
@@ -190,9 +190,9 @@ When testing multiple hypotheses:
 
 ```
 // Test hypotheses simultaneously
-Task(subagent_type="oh-my-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:A] Test if caching improves...")
-Task(subagent_type="oh-my-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:B] Test if batching reduces...")
-Task(subagent_type="oh-my-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:C] Test if lazy loading helps...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:A] Test if caching improves...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:B] Test if batching reduces...")
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="sonnet", prompt="[HYPOTHESIS:C] Test if lazy loading helps...")
 ```
 
 ### Cross-Validation (Sequential)
@@ -204,7 +204,7 @@ When verification depends on all findings:
 [stages complete]
 
 // Then sequential verification
-Task(subagent_type="oh-my-copilot-cli:scientist", model="opus", prompt="
+Task(subagent_type="oh-my-github-copilot-cli:scientist", model="opus", prompt="
 [CROSS_VALIDATION]
 Validate consistency across all findings:
 - Finding 1: ...
@@ -279,12 +279,12 @@ Batch 2: Stages 6-7 (parallel)
 
 | Command | Action |
 |---------|--------|
-| `/oh-my-copilot-cli:sciomc status` | Show current session progress |
-| `/oh-my-copilot-cli:sciomc resume` | Resume most recent interrupted session |
-| `/oh-my-copilot-cli:sciomc resume <session-id>` | Resume specific session |
-| `/oh-my-copilot-cli:sciomc list` | List all sessions with status |
-| `/oh-my-copilot-cli:sciomc report <session-id>` | Generate/regenerate report |
-| `/oh-my-copilot-cli:sciomc cancel` | Cancel current session (preserves state) |
+| `/oh-my-github-copilot-cli:sciomc status` | Show current session progress |
+| `/oh-my-github-copilot-cli:sciomc resume` | Resume most recent interrupted session |
+| `/oh-my-github-copilot-cli:sciomc resume <session-id>` | Resume specific session |
+| `/oh-my-github-copilot-cli:sciomc list` | List all sessions with status |
+| `/oh-my-github-copilot-cli:sciomc report <session-id>` | Generate/regenerate report |
+| `/oh-my-github-copilot-cli:sciomc cancel` | Cancel current session (preserves state) |
 
 ## Tag Extraction
 
@@ -479,7 +479,7 @@ Optional settings in `.claude/settings.json`:
 ## Cancellation
 
 ```
-/oh-my-copilot-cli:cancel
+/oh-my-github-copilot-cli:cancel
 ```
 
 Or say: "stop research", "cancel research", "abort"

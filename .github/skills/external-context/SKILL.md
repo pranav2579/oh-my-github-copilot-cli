@@ -10,15 +10,15 @@ Fetch external documentation, references, and context for a query. Decomposes in
 ## Usage
 
 ```
-/oh-my-copilot-cli:external-context <topic or question>
+/oh-my-github-copilot-cli:external-context <topic or question>
 ```
 
 ### Examples
 
 ```
-/oh-my-copilot-cli:external-context What are the best practices for JWT token rotation in Node.js?
-/oh-my-copilot-cli:external-context Compare Prisma vs Drizzle ORM for PostgreSQL
-/oh-my-copilot-cli:external-context Latest React Server Components patterns and conventions
+/oh-my-github-copilot-cli:external-context What are the best practices for JWT token rotation in Node.js?
+/oh-my-github-copilot-cli:external-context Compare Prisma vs Drizzle ORM for PostgreSQL
+/oh-my-github-copilot-cli:external-context Latest React Server Components patterns and conventions
 ```
 
 ## Protocol
@@ -45,9 +45,9 @@ Given a query, decompose into 2-5 independent search facets:
 Fire independent facets in parallel via `task` tool:
 
 ```
-Task(subagent_type="oh-my-copilot-cli:document-specialist", model="sonnet", prompt="Search for: <facet 1 description>. Use WebSearch and WebFetch to find official documentation and examples. Cite all sources with URLs.")
+Task(subagent_type="oh-my-github-copilot-cli:document-specialist", model="sonnet", prompt="Search for: <facet 1 description>. Use WebSearch and WebFetch to find official documentation and examples. Cite all sources with URLs.")
 
-Task(subagent_type="oh-my-copilot-cli:document-specialist", model="sonnet", prompt="Search for: <facet 2 description>. Use WebSearch and WebFetch to find official documentation and examples. Cite all sources with URLs.")
+Task(subagent_type="oh-my-github-copilot-cli:document-specialist", model="sonnet", prompt="Search for: <facet 2 description>. Use WebSearch and WebFetch to find official documentation and examples. Cite all sources with URLs.")
 ```
 
 Maximum 5 parallel document-specialist agents.

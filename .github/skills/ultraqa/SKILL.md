@@ -19,11 +19,11 @@ Parse the goal from arguments. Supported formats:
 
 | Invocation | Goal Type | What to Check |
 |------------|-----------|---------------|
-| `/oh-my-copilot-cli:ultraqa --tests` | tests | All test suites pass |
-| `/oh-my-copilot-cli:ultraqa --build` | build | Build succeeds with exit 0 |
-| `/oh-my-copilot-cli:ultraqa --lint` | lint | No lint errors |
-| `/oh-my-copilot-cli:ultraqa --typecheck` | typecheck | No TypeScript errors |
-| `/oh-my-copilot-cli:ultraqa --custom "pattern"` | custom | Custom success pattern in output |
+| `/oh-my-github-copilot-cli:ultraqa --tests` | tests | All test suites pass |
+| `/oh-my-github-copilot-cli:ultraqa --build` | build | Build succeeds with exit 0 |
+| `/oh-my-github-copilot-cli:ultraqa --lint` | lint | No lint errors |
+| `/oh-my-github-copilot-cli:ultraqa --typecheck` | typecheck | No TypeScript errors |
+| `/oh-my-github-copilot-cli:ultraqa --custom "pattern"` | custom | Custom success pattern in output |
 
 If no structured goal provided, interpret the argument as a custom goal.
 
@@ -39,7 +39,7 @@ If no structured goal provided, interpret the argument as a custom goal.
    - `--custom`: Run appropriate command and check for pattern
    - `--interactive`: Use qa-tester for interactive CLI/service testing:
      ```
-     Task(subagent_type="oh-my-copilot-cli:qa-tester", model="sonnet", prompt="TEST:
+     Task(subagent_type="oh-my-github-copilot-cli:qa-tester", model="sonnet", prompt="TEST:
      Goal: [describe what to verify]
      Service: [how to start]
      Test cases: [specific scenarios to verify]")
@@ -51,7 +51,7 @@ If no structured goal provided, interpret the argument as a custom goal.
 
 3. **ARCHITECT DIAGNOSIS**: Spawn architect to analyze failure
    ```
-   Task(subagent_type="oh-my-copilot-cli:architect", model="opus", prompt="DIAGNOSE FAILURE:
+   Task(subagent_type="oh-my-github-copilot-cli:architect", model="opus", prompt="DIAGNOSE FAILURE:
    Goal: [goal type]
    Output: [test/build output]
    Provide root cause and specific fix recommendations.")
@@ -59,7 +59,7 @@ If no structured goal provided, interpret the argument as a custom goal.
 
 4. **FIX ISSUES**: Apply architect's recommendations
    ```
-   Task(subagent_type="oh-my-copilot-cli:executor", model="sonnet", prompt="FIX:
+   Task(subagent_type="oh-my-github-copilot-cli:executor", model="sonnet", prompt="FIX:
    Issue: [architect diagnosis]
    Files: [affected files]
    Apply the fix precisely as recommended.")
@@ -107,7 +107,7 @@ Track state in `.omcc/ultraqa-state.json`:
 
 ## Cancellation
 
-User can cancel with `/oh-my-copilot-cli:cancel` which clears the state file.
+User can cancel with `/oh-my-github-copilot-cli:cancel` which clears the state file.
 
 ## Important Rules
 

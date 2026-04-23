@@ -161,5 +161,5 @@ If code helps, show it - but as illustration of the principle, not copy-paste ma
 
 ## Related Commands
 
-- /oh-my-copilot-cli:note - Save quick notes that survive compaction (less formal than skills)
-- /oh-my-copilot-cli:ralph - Start a development loop with learning capture
+- /oh-my-github-copilot-cli:note - Save quick notes that survive compaction (less formal than skills)
+- /oh-my-github-copilot-cli:ralph - Start a development loop with learning capture
