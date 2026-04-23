@@ -20,7 +20,8 @@ describe("resolveTargets", () => {
   });
   it("user scope resolves to ~/.copilot", () => {
     const t = installer.resolveTargets({ scope: "user" });
-    expect(t.payloadDest.agents).toMatch(/\.copilot\/agents$/);
+    // Use path.sep-tolerant regex so Windows backslash paths also match.
+    expect(t.payloadDest.agents).toMatch(/[\\/]\.copilot[\\/]agents$/);
   });
 });
 

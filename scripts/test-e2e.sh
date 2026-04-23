@@ -126,7 +126,10 @@ MCP="$PREFIX/node_modules/oh-my-github-copilot-cli/mcp-server/dist/index.js"
 [[ -f "$MCP" ]] && pass "mcp-server/dist/index.js shipped" || fail "MCP entrypoint missing"
 
 INIT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"e2e","version":"1"}}}'
-INIT_RESP="$(echo "$INIT_REQ" | node "$MCP" 2>&1 | head -1)"
+# MCP stdio servers may not auto-exit on stdin EOF on some platforms; bound
+# with `timeout` and tolerate non-zero exit (SIGPIPE / SIGTERM) — we only
+# care about the response on stdout.
+INIT_RESP="$( ( echo "$INIT_REQ"; sleep 1 ) | { timeout 5 node "$MCP" 2>&1 || true; } | head -1 || true)"
 echo "$INIT_RESP" | grep -q '"serverInfo"' \
     && pass "MCP initialize → serverInfo returned" \
     || fail "MCP initialize failed: $INIT_RESP"
@@ -135,7 +138,7 @@ echo "$INIT_RESP" | grep -q '"serverInfo"' \
 TL_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"e2e","version":"1"}}}
 {"jsonrpc":"2.0","method":"notifications/initialized"}
 {"jsonrpc":"2.0","id":2,"method":"tools/list"}'
-TOOLS_OUT="$(printf "%s\n" "$TL_REQ" | node "$MCP" 2>&1)"
+TOOLS_OUT="$( ( printf "%s\n" "$TL_REQ"; sleep 1 ) | { timeout 5 node "$MCP" 2>&1 || true; } )"
 TOOL_COUNT="$(echo "$TOOLS_OUT" | grep -oE '"name":"omcc_[a-z_]+' | sort -u | wc -l | tr -d ' ')"
 [[ "$TOOL_COUNT" == "14" ]] && pass "MCP tools/list returns 14 omcc_* tools" \
                             || fail "expected 14 MCP tools, got $TOOL_COUNT"
@@ -148,7 +151,7 @@ RT_REQ='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion
 {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"omcc_state_set","arguments":{"key":"e2e","value":"hello"}}}
 {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"omcc_state_get","arguments":{"key":"e2e"}}}'
 # Run with a per-test sqlite path so we don't pollute user's real state
-RT_OUT="$(OMCC_DB="$WORK/state.sqlite" printf "%s\n" "$RT_REQ" | OMCC_DB="$WORK/state.sqlite" node "$MCP" 2>&1)"
+RT_OUT="$( ( printf "%s\n" "$RT_REQ"; sleep 1 ) | { OMCC_DB="$WORK/state.sqlite" timeout 5 node "$MCP" 2>&1 || true; } )"
 echo "$RT_OUT" | grep -q 'hello' && pass "state_set → state_get round-trip returns 'hello'" \
                                 || fail "round-trip failed: $RT_OUT"
 
