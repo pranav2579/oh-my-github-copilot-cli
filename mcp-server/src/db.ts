@@ -1,0 +1,68 @@
+// mcp-server/src/db.ts
+// Thin wrapper over Node 22's built-in node:sqlite. Provides the OMCC schema.
+
+import { createRequire } from "node:module";
+import { mkdirSync } from "node:fs";
+import { dirname } from "node:path";
+
+// Load node:sqlite via createRequire so vite/vitest transformers don't mangle
+// the bare specifier — they tend to strip the `node:` prefix.
+const require = createRequire(import.meta.url);
+const { DatabaseSync } = require("node:sqlite") as typeof import("node:sqlite");
+
+export interface OmccDb {
+  raw: InstanceType<typeof DatabaseSync>;
+  close(): void;
+}
+
+export function openDb(path: string): OmccDb {
+  mkdirSync(dirname(path), { recursive: true });
+  const db = new DatabaseSync(path);
+  db.exec(`
+    PRAGMA journal_mode = WAL;
+    PRAGMA foreign_keys = ON;
+
+    CREATE TABLE IF NOT EXISTS state (
+      key   TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS prd (
+      id        TEXT PRIMARY KEY,
+      content   TEXT NOT NULL,
+      status    TEXT NOT NULL DEFAULT 'draft',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS stories (
+      prd_id    TEXT NOT NULL,
+      id        TEXT NOT NULL,
+      title     TEXT NOT NULL,
+      status    TEXT NOT NULL DEFAULT 'pending',
+      evidence  TEXT,
+      PRIMARY KEY (prd_id, id),
+      FOREIGN KEY (prd_id) REFERENCES prd(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS workflow_phase (
+      scope TEXT PRIMARY KEY,
+      phase TEXT NOT NULL,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS memory (
+      key       TEXT PRIMARY KEY,
+      value     TEXT NOT NULL,
+      tags      TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  return {
+    raw: db,
+    close() {
+      db.close();
+    },
+  };
+}
