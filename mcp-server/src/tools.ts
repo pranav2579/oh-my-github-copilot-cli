@@ -15,6 +15,18 @@ import {
   omcc_memory_demote,
   omcc_memory_layer_add,
 } from "./memory-layers.js";
+import {
+  omcc_benchmark_record,
+  omcc_benchmark_compare,
+  omcc_benchmark_report,
+  omcc_benchmark_history,
+} from "./benchmark.js";
+import {
+  omcc_decision_add,
+  omcc_decision_list,
+  omcc_decision_check,
+  omcc_decision_update_status,
+} from "./decision-log.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -303,6 +315,10 @@ export const TOOLS = {
   omcc_memory_promote,
   omcc_memory_demote,
   omcc_memory_layer_add,
+  omcc_decision_add,
+  omcc_decision_list,
+  omcc_decision_check,
+  omcc_decision_update_status,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;

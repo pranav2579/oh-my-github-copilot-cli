@@ -193,6 +193,48 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Add or update an entry in the layered memory system.",
     inputSchema: { type: "object", properties: { id: { type: "string" }, content: { type: "string" }, level: { type: "number" }, confidence: { type: "number" }, category: { type: "string" }, source: { type: "string" } }, required: ["id", "content"] },
   },
+  omcc_decision_add: {
+    description: "Record an architectural or project decision with rationale.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        decision: { type: "string" },
+        rationale: { type: "string" },
+        category: { type: "string", enum: ["architecture", "technology", "scope", "process"] },
+      },
+      required: ["decision", "rationale"],
+    },
+  },
+  omcc_decision_list: {
+    description: "List recorded decisions, optionally filtered by category and status.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        category: { type: "string", enum: ["architecture", "technology", "scope", "process"] },
+        status: { type: "string", enum: ["active", "superseded", "reversed"] },
+      },
+    },
+  },
+  omcc_decision_check: {
+    description: "Check if a proposed action contradicts any recorded active decision via keyword matching.",
+    inputSchema: {
+      type: "object",
+      properties: { proposal: { type: "string" } },
+      required: ["proposal"],
+    },
+  },
+  omcc_decision_update_status: {
+    description: "Update the status of a recorded decision (active, superseded, reversed).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        status: { type: "string", enum: ["active", "superseded", "reversed"] },
+      },
+      required: ["id", "status"],
+    },
+  },
 };
 
 async function main() {
