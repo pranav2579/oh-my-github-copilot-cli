@@ -17,7 +17,7 @@ const DB_PATH =
   process.env.OMCC_DB ??
   join(process.env.HOME ?? homedir(), ".omcc", "state.sqlite");
 
-const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object }> = {
+const TOOL_SCHEMAS: Record<string, { description: string; inputSchema: object }> = {
   omcc_state_get: {
     description: "Retrieve a value from the OMCC key/value state store.",
     inputSchema: { type: "object", properties: { key: { type: "string" } }, required: ["key"] },
@@ -116,7 +116,160 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Recommend a model for a given task description.",
     inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
   },
+  omcc_decision_add: {
+    description: "Record an architectural or project decision with rationale.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        decision: { type: "string" },
+        rationale: { type: "string" },
+        category: { type: "string" },
+      },
+      required: ["decision", "rationale"],
+    },
+  },
+  omcc_decision_list: {
+    description: "List recorded decisions.",
+    inputSchema: {
+      type: "object",
+      properties: { category: { type: "string" }, status: { type: "string" } },
+    },
+  },
+  omcc_decision_check: {
+    description: "Check if a proposed action contradicts any recorded active decision.",
+    inputSchema: {
+      type: "object",
+      properties: { proposal: { type: "string" } },
+      required: ["proposal"],
+    },
+  },
+  omcc_decision_update_status: {
+    description: "Update the status of a recorded decision.",
+    inputSchema: {
+      type: "object",
+      properties: { id: { type: "string" }, status: { type: "string" } },
+      required: ["id", "status"],
+    },
+  },
+  omcc_msg_send: {
+    description: "Send a message to another agent.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        from: { type: "string" },
+        to: { type: "string" },
+        content: { type: "string" },
+        channel: { type: "string" },
+        priority: { type: "integer" },
+      },
+      required: ["from", "content"],
+    },
+  },
+  omcc_msg_receive: {
+    description: "Get pending messages for an agent.",
+    inputSchema: {
+      type: "object",
+      properties: { agent: { type: "string" }, channel: { type: "string" } },
+      required: ["agent"],
+    },
+  },
+  omcc_msg_acknowledge: {
+    description: "Mark a message as acknowledged.",
+    inputSchema: {
+      type: "object",
+      properties: { message_id: { type: "string" } },
+      required: ["message_id"],
+    },
+  },
+  omcc_msg_broadcast: {
+    description: "Send to all agents on a channel.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        from: { type: "string" },
+        content: { type: "string" },
+        channel: { type: "string" },
+      },
+      required: ["from", "content"],
+    },
+  },
+  omcc_lock_acquire: {
+    description: "Acquire a lease-based file lock.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        file_path: { type: "string" },
+        owner: { type: "string" },
+        ttl_seconds: { type: "number" },
+      },
+      required: ["file_path", "owner"],
+    },
+  },
+  omcc_lock_release: {
+    description: "Release a file lock.",
+    inputSchema: {
+      type: "object",
+      properties: { file_path: { type: "string" }, owner: { type: "string" } },
+      required: ["file_path", "owner"],
+    },
+  },
+  omcc_lock_check: {
+    description: "Check if a file is locked.",
+    inputSchema: {
+      type: "object",
+      properties: { file_path: { type: "string" } },
+      required: ["file_path"],
+    },
+  },
 };
+
+// --- learning pipeline tools ---
+const LEARNING_SCHEMAS: Record<string, { description: string; inputSchema: object }> = {
+  omcc_learn_extract: {
+    description: "Extract patterns from a description of what happened in a session.",
+    inputSchema: {
+      type: "object",
+      properties: { session_summary: { type: "string" } },
+      required: ["session_summary"],
+    },
+  },
+  omcc_learn_record: {
+    description: "Record a specific learned pattern.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        pattern: { type: "string" },
+        category: { type: "string" },
+        confidence: { type: "number" },
+      },
+      required: ["pattern", "category"],
+    },
+  },
+  omcc_learn_promote: {
+    description: "Promote a pattern to a higher memory layer.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        target: { type: "string" },
+      },
+      required: ["id", "target"],
+    },
+  },
+  omcc_learn_list: {
+    description: "List learned patterns.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        category: { type: "string" },
+        min_confidence: { type: "number" },
+      },
+    },
+  },
+};
+
+const ALL_SCHEMAS: Record<string, { description: string; inputSchema: object }> = { ...TOOL_SCHEMAS, ...LEARNING_SCHEMAS };
 
 async function main() {
   const db = openDb(DB_PATH);
@@ -129,8 +282,8 @@ async function main() {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: (Object.keys(TOOL_SCHEMAS) as ToolName[]).map((name) => ({
       name,
-      description: TOOL_SCHEMAS[name].description,
-      inputSchema: TOOL_SCHEMAS[name].inputSchema,
+      description: ALL_SCHEMAS[name].description,
+      inputSchema: ALL_SCHEMAS[name].inputSchema,
     })),
   }));
 
