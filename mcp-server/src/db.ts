@@ -58,6 +58,15 @@ export function openDb(path: string): OmccDb {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS decisions (
+      id        TEXT PRIMARY KEY,
+      decision  TEXT NOT NULL,
+      rationale TEXT NOT NULL,
+      date      TEXT NOT NULL DEFAULT (datetime('now')),
+      category  TEXT,
+      status    TEXT NOT NULL DEFAULT 'active'
+    );
   `);
   return {
     raw: db,
