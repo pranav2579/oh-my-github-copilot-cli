@@ -164,6 +164,48 @@ export function omcc_memory_search(db: OmccDb, args: { q: string; limit?: number
 
 // --- model routing ---
 
+export interface CategoryConfig {
+  description: string;
+  default_model: string;
+  fallback: string;
+}
+
+export const MODEL_CATEGORIES: Record<string, CategoryConfig> = {
+  orchestrator: {
+    description: "Planning, delegation, complex reasoning, multi-step analysis",
+    default_model: "claude-opus-4.6",
+    fallback: "claude-sonnet-4.6",
+  },
+  "deep-worker": {
+    description: "Autonomous research, long-running execution, deep exploration",
+    default_model: "gpt-5.4",
+    fallback: "claude-sonnet-4.6",
+  },
+  quick: {
+    description: "Single-file changes, formatting, simple fixes, typos",
+    default_model: "claude-haiku-4.5",
+    fallback: "gpt-5-mini",
+  },
+  reviewer: {
+    description: "Code review, security audit, architecture review",
+    default_model: "claude-sonnet-4.6",
+    fallback: "claude-opus-4.6",
+  },
+  creative: {
+    description: "UI/UX design, game design, content creation, brainstorming",
+    default_model: "gemini-2.5-pro",
+    fallback: "claude-sonnet-4.6",
+  },
+};
+
+const CATEGORY_KEYWORDS: { match: RegExp; category: string }[] = [
+  { match: /\b(review|audit|security|code.?review|architecture review)\b/i, category: "reviewer" },
+  { match: /\b(plan|delegate|orchestrat|multi.?step|complex reason|analyz|architect)\b/i, category: "orchestrator" },
+  { match: /\b(research|autonomous|long.?running|deep.?explor|deep.?dive)\b/i, category: "deep-worker" },
+  { match: /\b(ui.?design|ux.?design|game.?design|creative|brainstorm|content.?creat)\b/i, category: "creative" },
+  { match: /\b(quick|small|trivial|simple|one.?liner|format|typo|fix)\b/i, category: "quick" },
+];
+
 const ROUTING_RULES: { match: RegExp; model: string; reason: string }[] = [
   { match: /\b(architect|design|review|critique|spec|plan)\b/i, model: "claude-opus-4.7", reason: "design/architecture/review → high-reasoning model" },
   { match: /\b(refactor|simplify|cleanup|rename)\b/i, model: "claude-sonnet-4.6", reason: "structural change → balanced model" },
@@ -173,14 +215,55 @@ const ROUTING_RULES: { match: RegExp; model: string; reason: string }[] = [
   { match: /\b(explore|search|find|grep|inspect|read)\b/i, model: "claude-haiku-4.5", reason: "exploration → fast/cheap model" },
 ];
 
-export function omcc_route_model(_db: OmccDb, args: { task: string }): ToolResult {
-  if (!args?.task) return err("task required");
+function inferCategory(task: string): string | null {
+  for (const rule of CATEGORY_KEYWORDS) {
+    if (rule.match.test(task)) return rule.category;
+  }
+  return null;
+}
+
+export function omcc_route_model(_db: OmccDb, args: { task?: string; category?: string }): ToolResult {
+  // Category-based routing: direct lookup
+  if (args?.category) {
+    const cat = MODEL_CATEGORIES[args.category];
+    if (!cat) {
+      return ok({
+        model: "claude-sonnet-4.6",
+        category: null,
+        reason: `unknown category "${args.category}", using default`,
+      });
+    }
+    return ok({
+      model: cat.default_model,
+      category: args.category,
+      reason: `category "${args.category}": ${cat.description}`,
+    });
+  }
+
+  // Task-based routing: try category inference first, then fall back to keyword rules
+  if (!args?.task) return err("task or category required");
+
+  const inferred = inferCategory(args.task);
+  if (inferred) {
+    const cat = MODEL_CATEGORIES[inferred];
+    return ok({
+      model: cat.default_model,
+      category: inferred,
+      reason: `inferred category "${inferred}": ${cat.description}`,
+    });
+  }
+
+  // Legacy keyword matching (backward compat)
   for (const r of ROUTING_RULES) {
     if (r.match.test(args.task)) {
-      return ok({ model: r.model, reason: r.reason });
+      return ok({ model: r.model, category: null, reason: r.reason });
     }
   }
-  return ok({ model: "claude-sonnet-4.6", reason: "default — balanced general-purpose model" });
+  return ok({ model: "claude-sonnet-4.6", category: null, reason: "default — balanced general-purpose model" });
+}
+
+export function omcc_route_categories(_db: OmccDb, _args: Record<string, never>): ToolResult {
+  return ok(MODEL_CATEGORIES);
 }
 
 // --- fitness score ---
@@ -208,6 +291,7 @@ export const TOOLS = {
   omcc_failure_pattern_add,
   omcc_failure_pattern_list,
   omcc_failure_pattern_check,
+  omcc_route_categories,
   omcc_fitness_score,
 } as const;
 

@@ -113,8 +113,18 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     },
   },
   omcc_route_model: {
-    description: "Recommend a model for a given task description.",
-    inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
+    description: "Recommend a model for a given task description or category.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        task: { type: "string" },
+        category: { type: "string" },
+      },
+    },
+  },
+  omcc_route_categories: {
+    description: "List all available model routing categories with descriptions.",
+    inputSchema: { type: "object", properties: {} },
   },
   omcc_failure_pattern_add: {
     description: "Add a new failure pattern. Auto-increments occurrences if pattern text matches existing.",
