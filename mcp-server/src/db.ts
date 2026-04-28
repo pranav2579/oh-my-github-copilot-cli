@@ -116,6 +116,19 @@ export function openDb(path: string): OmccDb {
       owner       TEXT NOT NULL,
       expires_at  TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS evolution_candidates (
+      id                TEXT PRIMARY KEY,
+      target_file       TEXT NOT NULL,
+      mutation_type     TEXT NOT NULL,
+      description       TEXT NOT NULL,
+      original_content  TEXT,
+      proposed_content  TEXT NOT NULL,
+      eval_score        REAL,
+      status            TEXT NOT NULL DEFAULT 'proposed',
+      created_at        TEXT NOT NULL DEFAULT (datetime('now')),
+      resolved_at       TEXT
+    );
   `);
   return {
     raw: db,

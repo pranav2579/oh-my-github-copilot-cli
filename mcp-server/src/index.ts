@@ -408,6 +408,57 @@ const TOOL_SCHEMAS: Record<string, { description: string; inputSchema: object }>
       },
     },
   },
+  omcc_evolve_propose: {
+    description: "Propose a mutation to a skill or agent file.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target_file: { type: "string" },
+        mutation_type: { type: "string" },
+        description: { type: "string" },
+        proposed_content: { type: "string" },
+      },
+      required: ["target_file", "mutation_type", "description", "proposed_content"],
+    },
+  },
+  omcc_evolve_evaluate: {
+    description: "Score a proposed candidate (0.0-1.0) and advance to testing.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        candidate_id: { type: "string" },
+        eval_score: { type: "number" },
+      },
+      required: ["candidate_id", "eval_score"],
+    },
+  },
+  omcc_evolve_promote: {
+    description: "Promote a tested candidate (apply the mutation).",
+    inputSchema: {
+      type: "object",
+      properties: { candidate_id: { type: "string" } },
+      required: ["candidate_id"],
+    },
+  },
+  omcc_evolve_rollback: {
+    description: "Archive a candidate without applying it.",
+    inputSchema: {
+      type: "object",
+      properties: { candidate_id: { type: "string" } },
+      required: ["candidate_id"],
+    },
+  },
+  omcc_evolve_history: {
+    description: "List evolution candidates, optionally filtered by file or status.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target_file: { type: "string" },
+        status: { type: "string" },
+        limit: { type: "integer" },
+      },
+    },
+  },
 };
 
 // --- learning pipeline tools ---

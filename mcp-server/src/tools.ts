@@ -46,6 +46,13 @@ import {
   listWorkflows,
 } from "./workflow-engine.js";
 import {
+  omcc_evolve_propose,
+  omcc_evolve_evaluate,
+  omcc_evolve_promote,
+  omcc_evolve_rollback,
+  omcc_evolve_history,
+} from "./evolution.js";
+import {
   omcc_eval_create as evalCreate,
   omcc_eval_score as evalScore,
   omcc_eval_report as evalReport,
@@ -438,6 +445,11 @@ export const TOOLS = {
   omcc_eval_score,
   omcc_eval_report,
   omcc_eval_history,
+  omcc_evolve_propose,
+  omcc_evolve_evaluate,
+  omcc_evolve_promote,
+  omcc_evolve_rollback,
+  omcc_evolve_history,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
