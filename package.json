@@ -52,6 +52,7 @@
     "access": "public"
   },
   "scripts": {
+    "analyze": "node scripts/analyze-tokens.mjs",
     "build": "node scripts/build-mcp-server.mjs",
     "validate": "node scripts/validate-frontmatter.mjs",
     "test": "vitest run",
