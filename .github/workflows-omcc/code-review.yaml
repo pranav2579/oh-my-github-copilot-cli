@@ -1,0 +1,13 @@
+name: Code Review
+description: Multi-perspective code review
+nodes:
+  - id: security
+    agent: security-reviewer
+    prompt: "Security review of recent changes"
+  - id: quality
+    agent: code-reviewer
+    prompt: "Quality review of recent changes"
+  - id: synthesize
+    depends_on: [security, quality]
+    agent: analyst
+    prompt: "Synthesize security and quality reviews into a unified report"

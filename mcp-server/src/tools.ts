@@ -4,6 +4,15 @@
 
 import type { OmccDb } from "./db.js";
 import {
+  parseWorkflow,
+  validateDAG,
+  getExecutionOrder,
+  createRun,
+  getRun,
+  completeNode,
+  listWorkflows,
+} from "./workflow-engine.js";
+import {
   omcc_eval_create as evalCreate,
   omcc_eval_score as evalScore,
   omcc_eval_report as evalReport,
@@ -165,12 +174,12 @@ export function omcc_memory_search(db: OmccDb, args: { q: string; limit?: number
 // --- model routing ---
 
 const ROUTING_RULES: { match: RegExp; model: string; reason: string }[] = [
-  { match: /\b(architect|design|review|critique|spec|plan)\b/i, model: "claude-opus-4.7", reason: "design/architecture/review → high-reasoning model" },
-  { match: /\b(refactor|simplify|cleanup|rename)\b/i, model: "claude-sonnet-4.6", reason: "structural change → balanced model" },
-  { match: /\b(implement|write code|build|edit|create file)\b/i, model: "gpt-5.3-codex", reason: "code generation → code-tuned model" },
-  { match: /\b(test|vitest|jest|pytest|unit test)\b/i, model: "claude-sonnet-4.6", reason: "test authoring → balanced model" },
-  { match: /\b(quick|small|trivial|simple|one-liner|format)\b/i, model: "claude-haiku-4.5", reason: "small task → fast/cheap model" },
-  { match: /\b(explore|search|find|grep|inspect|read)\b/i, model: "claude-haiku-4.5", reason: "exploration → fast/cheap model" },
+  { match: /\b(architect|design|review|critique|spec|plan)\b/i, model: "claude-opus-4.7", reason: "design/architecture/review â†’ high-reasoning model" },
+  { match: /\b(refactor|simplify|cleanup|rename)\b/i, model: "claude-sonnet-4.6", reason: "structural change â†’ balanced model" },
+  { match: /\b(implement|write code|build|edit|create file)\b/i, model: "gpt-5.3-codex", reason: "code generation â†’ code-tuned model" },
+  { match: /\b(test|vitest|jest|pytest|unit test)\b/i, model: "claude-sonnet-4.6", reason: "test authoring â†’ balanced model" },
+  { match: /\b(quick|small|trivial|simple|one-liner|format)\b/i, model: "claude-haiku-4.5", reason: "small task â†’ fast/cheap model" },
+  { match: /\b(explore|search|find|grep|inspect|read)\b/i, model: "claude-haiku-4.5", reason: "exploration â†’ fast/cheap model" },
 ];
 
 export function omcc_route_model(_db: OmccDb, args: { task: string }): ToolResult {
@@ -180,7 +189,7 @@ export function omcc_route_model(_db: OmccDb, args: { task: string }): ToolResul
       return ok({ model: r.model, reason: r.reason });
     }
   }
-  return ok({ model: "claude-sonnet-4.6", reason: "default — balanced general-purpose model" });
+  return ok({ model: "claude-sonnet-4.6", reason: "default â€” balanced general-purpose model" });
 }
 
 
@@ -208,6 +217,60 @@ export function omcc_eval_history(db: OmccDb, args: { skill_name?: string }): To
   const r = evalHistory(db, args);
   return r.ok ? ok(r.data) : err(r.error ?? "eval_history failed");
 }
+
+
+// --- workflow engine ---
+
+const DEFAULT_WORKFLOW_DIR = ".github/workflows-omcc";
+
+export function omcc_workflow_list(_db: OmccDb, args: { dir?: string }): ToolResult {
+  const dir = args?.dir ?? DEFAULT_WORKFLOW_DIR;
+  try { const workflows = listWorkflows(dir); return ok(workflows); }
+  catch (e: unknown) { return err(`Failed to list workflows: ${e instanceof Error ? e.message : String(e)}`); }
+}
+
+export function omcc_workflow_run(db: OmccDb, args: { name: string; yaml_content?: string; dir?: string; dry_run?: boolean }): ToolResult {
+  if (!args?.name) return err("name required");
+  const dir = args.dir ?? DEFAULT_WORKFLOW_DIR;
+  let yamlContent = args.yaml_content;
+  if (!yamlContent) {
+    const { readFileSync, readdirSync, existsSync } = require("node:fs") as typeof import("node:fs");
+    const { join, extname } = require("node:path") as typeof import("node:path");
+    if (!existsSync(dir)) return err(`Workflow directory not found: ${dir}`);
+    const files = readdirSync(dir).filter((f: string) => extname(f) === ".yaml" || extname(f) === ".yml");
+    for (const file of files) { try { const content = readFileSync(join(dir, file), "utf-8"); const wf = parseWorkflow(content); if (wf.name === args.name) { yamlContent = content; break; } } catch { /* skip */ } }
+    if (!yamlContent) return err(`Workflow not found: '${args.name}'`);
+  }
+  let workflow: ReturnType<typeof parseWorkflow>;
+  try { workflow = parseWorkflow(yamlContent); } catch (e: unknown) { return err(`Parse error: ${e instanceof Error ? e.message : String(e)}`); }
+  const errors = validateDAG(workflow);
+  if (errors.length > 0) return err(`Validation errors: ${errors.join("; ")}`);
+  const waves = getExecutionOrder(workflow);
+  const plan = waves.map((wave, i) => ({ wave: i + 1, parallel: wave.length > 1, nodes: wave.map((id) => { const node = workflow.nodes.find((n) => n.id === id)!; return { id: node.id, type: node.loop ? "loop" : node.skill ? "skill" : node.agent ? "agent" : node.bash ? "bash" : "interactive", skill: node.skill ?? node.loop?.skill, agent: node.agent, bash: node.bash, prompt: node.prompt ?? node.loop?.prompt, loop: node.loop ? { until: node.loop.until, max_iterations: node.loop.max_iterations } : undefined }; }) }));
+  if (args.dry_run) return ok({ dry_run: true, workflow_name: workflow.name, plan });
+  const run = createRun(db, workflow);
+  return ok({ run_id: run.id, workflow_name: workflow.name, status: run.status, plan });
+}
+
+export function omcc_workflow_status(db: OmccDb, args: { run_id: string }): ToolResult {
+  if (!args?.run_id) return err("run_id required");
+  const run = getRun(db, args.run_id);
+  if (!run) return err(`Run not found: '${args.run_id}'`);
+  const completed = Object.entries(run.results).filter(([, r]) => r.status === "completed").map(([id]) => id);
+  const failed = Object.entries(run.results).filter(([, r]) => r.status === "failed").map(([id]) => id);
+  const pending = Object.entries(run.results).filter(([, r]) => r.status === "pending").map(([id]) => id);
+  return ok({ run_id: run.id, workflow_name: run.workflow_name, status: run.status, current_node: run.current_node, started_at: run.started_at, completed_at: run.completed_at, nodes: { completed, failed, pending }, results: run.results });
+}
+
+export function omcc_workflow_complete_node(db: OmccDb, args: { run_id: string; node_id: string; status: "completed" | "failed"; result?: string }): ToolResult {
+  if (!args?.run_id) return err("run_id required");
+  if (!args?.node_id) return err("node_id required");
+  if (args.status !== "completed" && args.status !== "failed") return err("status must be 'completed' or 'failed'");
+  const run = completeNode(db, args.run_id, args.node_id, args.status, args.result);
+  if (!run) return err(`Run or node not found: run='${args.run_id}', node='${args.node_id}'`);
+  return ok({ run_id: run.id, workflow_status: run.status, node_id: args.node_id, node_status: args.status });
+}
+
 
 // Tool registry for the MCP transport layer
 export const TOOLS = {

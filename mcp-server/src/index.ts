@@ -116,6 +116,22 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Recommend a model for a given task description.",
     inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
   },
+  omcc_memory_layer_get: {
+    description: "Get content for a specific memory layer (0=Identity, 1=Essential Rules, 2=Project State, 3=Knowledge Base).",
+    inputSchema: { type: "object", properties: { level: { type: "number" }, q: { type: "string" } }, required: ["level"] },
+  },
+  omcc_memory_promote: {
+    description: "Promote a memory item up one layer (L3->L2 or L2->L1). L1 requires confidence >= 0.7.",
+    inputSchema: { type: "object", properties: { id: { type: "string" }, from_level: { type: "number" }, to_level: { type: "number" } }, required: ["id", "from_level", "to_level"] },
+  },
+  omcc_memory_demote: {
+    description: "Demote a memory item down one layer (L1->L2 or L2->L3).",
+    inputSchema: { type: "object", properties: { id: { type: "string" }, from_level: { type: "number" }, to_level: { type: "number" } }, required: ["id", "from_level", "to_level"] },
+  },
+  omcc_memory_layer_add: {
+    description: "Add or update an entry in the layered memory system.",
+    inputSchema: { type: "object", properties: { id: { type: "string" }, content: { type: "string" }, level: { type: "number" }, confidence: { type: "number" }, category: { type: "string" }, source: { type: "string" } }, required: ["id", "content"] },
+  },
   omcc_eval_create: {
     description: "Create an A/B skill evaluation.",
     inputSchema: {

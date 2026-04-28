@@ -1,0 +1,17 @@
+name: Bug Fix
+description: Investigate, fix, and verify a bug
+nodes:
+  - id: investigate
+    agent: debugger
+    prompt: "Investigate the reported bug"
+  - id: fix
+    depends_on: [investigate]
+    skill: autopilot
+    prompt: "Fix the bug based on investigation"
+  - id: verify
+    depends_on: [fix]
+    bash: "npm test"
+  - id: review
+    depends_on: [verify]
+    agent: code-reviewer
+    prompt: "Review the bug fix for correctness and side effects"
