@@ -27,6 +27,15 @@ import {
   omcc_decision_check,
   omcc_decision_update_status,
 } from "./decision-log.js";
+import {
+  omcc_msg_send,
+  omcc_msg_receive,
+  omcc_msg_acknowledge,
+  omcc_msg_broadcast,
+  omcc_lock_acquire,
+  omcc_lock_release,
+  omcc_lock_check,
+} from "./message-bus.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -315,10 +324,21 @@ export const TOOLS = {
   omcc_memory_promote,
   omcc_memory_demote,
   omcc_memory_layer_add,
+  omcc_benchmark_record,
+  omcc_benchmark_compare,
+  omcc_benchmark_report,
+  omcc_benchmark_history,
   omcc_decision_add,
   omcc_decision_list,
   omcc_decision_check,
   omcc_decision_update_status,
+  omcc_msg_send,
+  omcc_msg_receive,
+  omcc_msg_acknowledge,
+  omcc_msg_broadcast,
+  omcc_lock_acquire,
+  omcc_lock_release,
+  omcc_lock_check,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;

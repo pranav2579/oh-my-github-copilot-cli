@@ -100,6 +100,23 @@ export function openDb(path: string): OmccDb {
       promoted_to TEXT,
       created_at  TEXT DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS messages (
+      id          TEXT PRIMARY KEY,
+      sender      TEXT NOT NULL,
+      recipient   TEXT,
+      content     TEXT NOT NULL,
+      channel     TEXT NOT NULL DEFAULT 'default',
+      priority    INTEGER DEFAULT 0,
+      acknowledged INTEGER DEFAULT 0,
+      created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS file_locks (
+      file_path   TEXT PRIMARY KEY,
+      owner       TEXT NOT NULL,
+      expires_at  TEXT NOT NULL
+    );
   `);
   return {
     raw: db,
