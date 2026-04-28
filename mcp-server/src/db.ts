@@ -79,7 +79,6 @@ export function openDb(path: string): OmccDb {
       promoted_at TEXT,
       source      TEXT
     );
-
     CREATE TABLE IF NOT EXISTS decisions (
       id        TEXT PRIMARY KEY,
       decision  TEXT NOT NULL,
