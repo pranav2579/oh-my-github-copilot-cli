@@ -3,6 +3,12 @@
 // easy to unit-test.
 
 import type { OmccDb } from "./db.js";
+import {
+  omcc_decision_add,
+  omcc_decision_list,
+  omcc_decision_check,
+  omcc_decision_update_status,
+} from "./decision-log.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -193,6 +199,10 @@ export const TOOLS = {
   omcc_memory_recall,
   omcc_memory_search,
   omcc_route_model,
+  omcc_decision_add,
+  omcc_decision_list,
+  omcc_decision_check,
+  omcc_decision_update_status,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
