@@ -116,6 +116,50 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Recommend a model for a given task description.",
     inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
   },
+  omcc_eval_create: {
+    description: "Create an A/B skill evaluation.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        skill_name: { type: "string" },
+        test_cases: { type: "string" },
+        graders: { type: "string" },
+      },
+      required: ["skill_name", "test_cases", "graders"],
+    },
+  },
+  omcc_eval_score: {
+    description: "Submit scores for a trial arm (with or without skill).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        eval_id: { type: "string" },
+        arm: { type: "string" },
+        test_case_id: { type: "string" },
+        grader_results: { type: "string" },
+      },
+      required: ["eval_id", "arm", "test_case_id", "grader_results"],
+    },
+  },
+  omcc_eval_report: {
+    description: "Generate the evaluation report with grade (A/B/C/F) and delta analysis.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        eval_id: { type: "string" },
+      },
+      required: ["eval_id"],
+    },
+  },
+  omcc_eval_history: {
+    description: "List past skill evaluations, optionally filtered by skill name.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        skill_name: { type: "string" },
+      },
+    },
+  },
 };
 
 async function main() {

@@ -3,6 +3,12 @@
 // easy to unit-test.
 
 import type { OmccDb } from "./db.js";
+import {
+  omcc_eval_create as evalCreate,
+  omcc_eval_score as evalScore,
+  omcc_eval_report as evalReport,
+  omcc_eval_history as evalHistory,
+} from "./skill-eval.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -177,6 +183,32 @@ export function omcc_route_model(_db: OmccDb, args: { task: string }): ToolResul
   return ok({ model: "claude-sonnet-4.6", reason: "default — balanced general-purpose model" });
 }
 
+
+// --- skill evaluation ---
+
+export function omcc_eval_create(db: OmccDb, args: { skill_name: string; test_cases: string; graders: string }): ToolResult {
+  const r = evalCreate(db, args);
+  return r.ok ? ok(r.data) : err(r.error ?? "eval_create failed");
+}
+
+export function omcc_eval_score(
+  db: OmccDb,
+  args: { eval_id: string; arm: string; test_case_id: string; grader_results: string },
+): ToolResult {
+  const r = evalScore(db, args);
+  return r.ok ? ok(r.data) : err(r.error ?? "eval_score failed");
+}
+
+export function omcc_eval_report(db: OmccDb, args: { eval_id: string }): ToolResult {
+  const r = evalReport(db, args);
+  return r.ok ? ok(r.data) : err(r.error ?? "eval_report failed");
+}
+
+export function omcc_eval_history(db: OmccDb, args: { skill_name?: string }): ToolResult {
+  const r = evalHistory(db, args);
+  return r.ok ? ok(r.data) : err(r.error ?? "eval_history failed");
+}
+
 // Tool registry for the MCP transport layer
 export const TOOLS = {
   omcc_state_get,
@@ -193,6 +225,10 @@ export const TOOLS = {
   omcc_memory_recall,
   omcc_memory_search,
   omcc_route_model,
+  omcc_eval_create,
+  omcc_eval_score,
+  omcc_eval_report,
+  omcc_eval_history,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
