@@ -1,0 +1,6 @@
+{
+  "read-before-write": { "enabled": true, "severity": "warn" },
+  "no-debug-artifacts": { "enabled": true, "severity": "warn" },
+  "circuit-breaker": { "enabled": true, "severity": "error", "threshold": 3 },
+  "format-before-commit": { "enabled": true, "severity": "warn" }
+}
