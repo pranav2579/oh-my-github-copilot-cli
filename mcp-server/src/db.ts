@@ -88,6 +88,18 @@ export function openDb(path: string): OmccDb {
       category  TEXT,
       status    TEXT NOT NULL DEFAULT 'active'
     );
+
+    CREATE TABLE IF NOT EXISTS learned_patterns (
+      id          TEXT PRIMARY KEY,
+      pattern     TEXT NOT NULL,
+      category    TEXT NOT NULL,
+      confidence  REAL DEFAULT 0.3,
+      source      TEXT,
+      occurrences INTEGER DEFAULT 1,
+      last_seen   TEXT DEFAULT (datetime('now')),
+      promoted_to TEXT,
+      created_at  TEXT DEFAULT (datetime('now'))
+    );
   `);
   return {
     raw: db,

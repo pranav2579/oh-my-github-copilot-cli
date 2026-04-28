@@ -12,12 +12,15 @@ import { join } from "node:path";
 
 import { openDb } from "./db.js";
 import { TOOLS, type ToolName } from "./tools.js";
+import { LEARNING_TOOLS, type LearningToolName } from "./learning.js";
+
+const ALL_TOOLS = { ...TOOLS, ...LEARNING_TOOLS } as Record<string, (db: any, args: any) => any>;
 
 const DB_PATH =
   process.env.OMCC_DB ??
   join(process.env.HOME ?? homedir(), ".omcc", "state.sqlite");
 
-const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object }> = {
+const TOOL_SCHEMAS: Record<string, { description: string; inputSchema: object }> = {
   omcc_state_get: {
     description: "Retrieve a value from the OMCC key/value state store.",
     inputSchema: { type: "object", properties: { key: { type: "string" } }, required: ["key"] },
@@ -235,6 +238,62 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
       required: ["id", "status"],
     },
   },
+  omcc_benchmark_record: {
+    description: "Record a benchmark data point for cross-agent comparison.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        task_description: { type: "string" },
+        task_category: { type: "string" },
+        model_used: { type: "string" },
+        quality_score: { type: "number" },
+        tokens_used: { type: "integer" },
+        duration_seconds: { type: "number" },
+        cost_estimate: { type: "number" },
+        success: { type: "integer" },
+      },
+      required: ["task_description", "model_used"],
+    },
+  },
+  omcc_benchmark_compare: {
+    description: "Compare models for a task category sorted by quality/cost value ratio.",
+    inputSchema: {
+      type: "object",
+      properties: { task_category: { type: "string" } },
+      required: ["task_category"],
+    },
+  },
+  omcc_benchmark_report: {
+    description: "Generate a full benchmark report across all categories with recommended model per category.",
+    inputSchema: { type: "object", properties: {} },
+  },
+  omcc_benchmark_history: {
+    description: "List recent benchmark runs, optionally filtered by model and/or category.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        model: { type: "string" },
+        category: { type: "string" },
+        limit: { type: "integer" },
+      },
+    },
+  },
+  omcc_learn_extract: {
+    description: "Extract patterns from a description of what happened in a session.",
+    inputSchema: { type: "object", properties: { session_summary: { type: "string" } }, required: ["session_summary"] },
+  },
+  omcc_learn_record: {
+    description: "Record a specific learned pattern.",
+    inputSchema: { type: "object", properties: { pattern: { type: "string" }, category: { type: "string" }, confidence: { type: "number" } }, required: ["pattern", "category"] },
+  },
+  omcc_learn_promote: {
+    description: "Promote a pattern to a higher memory layer.",
+    inputSchema: { type: "object", properties: { id: { type: "string" }, target: { type: "string" } }, required: ["id", "target"] },
+  },
+  omcc_learn_list: {
+    description: "List learned patterns.",
+    inputSchema: { type: "object", properties: { category: { type: "string" }, min_confidence: { type: "number" } } },
+  },
 };
 
 async function main() {
@@ -246,7 +305,7 @@ async function main() {
   );
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: (Object.keys(TOOL_SCHEMAS) as ToolName[]).map((name) => ({
+    tools: Object.keys(TOOL_SCHEMAS).map((name) => ({
       name,
       description: TOOL_SCHEMAS[name].description,
       inputSchema: TOOL_SCHEMAS[name].inputSchema,
@@ -254,8 +313,8 @@ async function main() {
   }));
 
   server.setRequestHandler(CallToolRequestSchema, async (req) => {
-    const name = req.params.name as ToolName;
-    const fn = TOOLS[name];
+    const name = req.params.name;
+    const fn = ALL_TOOLS[name];
     if (!fn) {
       return {
         isError: true,
