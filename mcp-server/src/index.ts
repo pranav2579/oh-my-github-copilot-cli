@@ -116,6 +116,27 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Recommend a model for a given task description.",
     inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
   },
+  omcc_fitness_score: {
+    description: "Compute a deterministic 0.0-1.0 quality score from pre-computed build/lint/test results and file scans. Does not execute commands; accepts results from prior runs.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        project_root: { type: "string" },
+        changed_files: { type: "array", items: { type: "string" } },
+        build_cmd: { type: "string" },
+        build_exit_code: { type: "number" },
+        lint_cmd: { type: "string" },
+        lint_exit_code: { type: "number" },
+        lint_error_count: { type: "number" },
+        test_cmd: { type: "string" },
+        test_exit_code: { type: "number" },
+        test_passed: { type: "number" },
+        test_total: { type: "number" },
+        format_cmd: { type: "string" },
+        format_exit_code: { type: "number" },
+      },
+    },
+  },
 };
 
 async function main() {
