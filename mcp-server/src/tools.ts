@@ -8,6 +8,7 @@ import {
   omcc_failure_pattern_list,
   omcc_failure_pattern_check,
 } from "./failure-patterns.js";
+import { computeFitnessScore, type FitnessInput } from "./fitness.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -182,6 +183,12 @@ export function omcc_route_model(_db: OmccDb, args: { task: string }): ToolResul
   return ok({ model: "claude-sonnet-4.6", reason: "default — balanced general-purpose model" });
 }
 
+// --- fitness score ---
+
+export function omcc_fitness_score(_db: OmccDb, args: FitnessInput): ToolResult {
+  return ok(computeFitnessScore(args ?? {}));
+}
+
 // Tool registry for the MCP transport layer
 export const TOOLS = {
   omcc_state_get,
@@ -201,6 +208,7 @@ export const TOOLS = {
   omcc_failure_pattern_add,
   omcc_failure_pattern_list,
   omcc_failure_pattern_check,
+  omcc_fitness_score,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
