@@ -9,6 +9,12 @@ import {
   omcc_failure_pattern_check,
 } from "./failure-patterns.js";
 import { computeFitnessScore, type FitnessInput } from "./fitness.js";
+import {
+  omcc_memory_layer_get,
+  omcc_memory_promote,
+  omcc_memory_demote,
+  omcc_memory_layer_add,
+} from "./memory-layers.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -293,6 +299,10 @@ export const TOOLS = {
   omcc_failure_pattern_check,
   omcc_route_categories,
   omcc_fitness_score,
+  omcc_memory_layer_get,
+  omcc_memory_promote,
+  omcc_memory_demote,
+  omcc_memory_layer_add,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
