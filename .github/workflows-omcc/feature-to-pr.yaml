@@ -1,0 +1,20 @@
+name: Feature to PR
+description: Full lifecycle from requirement to pull request
+nodes:
+  - id: plan
+    skill: deep-interview
+    prompt: "Analyze requirements and create implementation plan"
+  - id: implement
+    depends_on: [plan]
+    loop:
+      skill: autopilot
+      prompt: "Implement next task from plan. Run validation."
+      until: ALL_TASKS_COMPLETE
+      max_iterations: 10
+  - id: validate
+    depends_on: [implement]
+    bash: "npm test"
+  - id: review
+    depends_on: [validate]
+    agent: code-reviewer
+    prompt: "Review all changes against the plan"
