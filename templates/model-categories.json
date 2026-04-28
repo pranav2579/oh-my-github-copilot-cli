@@ -1,0 +1,29 @@
+{
+  "categories": {
+    "orchestrator": {
+      "description": "Planning, delegation, complex reasoning, multi-step analysis",
+      "default_model": "claude-opus-4.6",
+      "fallback": "claude-sonnet-4.6"
+    },
+    "deep-worker": {
+      "description": "Autonomous research, long-running execution, deep exploration",
+      "default_model": "gpt-5.4",
+      "fallback": "claude-sonnet-4.6"
+    },
+    "quick": {
+      "description": "Single-file changes, formatting, simple fixes, typos",
+      "default_model": "claude-haiku-4.5",
+      "fallback": "gpt-5-mini"
+    },
+    "reviewer": {
+      "description": "Code review, security audit, architecture review",
+      "default_model": "claude-sonnet-4.6",
+      "fallback": "claude-opus-4.6"
+    },
+    "creative": {
+      "description": "UI/UX design, game design, content creation, brainstorming",
+      "default_model": "gemini-2.5-pro",
+      "fallback": "claude-sonnet-4.6"
+    }
+  }
+}
