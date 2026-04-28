@@ -58,6 +58,16 @@ export function openDb(path: string): OmccDb {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS failure_patterns (
+      id          TEXT PRIMARY KEY,
+      pattern     TEXT NOT NULL,
+      prevention  TEXT NOT NULL,
+      occurrences INTEGER NOT NULL DEFAULT 1,
+      last_seen   TEXT NOT NULL DEFAULT (datetime('now')),
+      scope       TEXT NOT NULL DEFAULT 'project',
+      created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
   return {
     raw: db,

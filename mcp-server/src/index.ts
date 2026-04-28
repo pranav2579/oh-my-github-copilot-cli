@@ -116,6 +116,36 @@ const TOOL_SCHEMAS: Record<ToolName, { description: string; inputSchema: object 
     description: "Recommend a model for a given task description.",
     inputSchema: { type: "object", properties: { task: { type: "string" } }, required: ["task"] },
   },
+  omcc_failure_pattern_add: {
+    description: "Add a new failure pattern. Auto-increments occurrences if pattern text matches existing.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        pattern: { type: "string" },
+        prevention: { type: "string" },
+        scope: { type: "string" },
+      },
+      required: ["pattern", "prevention"],
+    },
+  },
+  omcc_failure_pattern_list: {
+    description: "List all failure patterns sorted by occurrences.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        scope: { type: "string" },
+        limit: { type: "integer" },
+      },
+    },
+  },
+  omcc_failure_pattern_check: {
+    description: "Check if current context matches known failure patterns.",
+    inputSchema: {
+      type: "object",
+      properties: { context: { type: "string" } },
+      required: ["context"],
+    },
+  },
 };
 
 async function main() {

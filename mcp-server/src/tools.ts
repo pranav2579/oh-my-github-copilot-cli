@@ -3,6 +3,11 @@
 // easy to unit-test.
 
 import type { OmccDb } from "./db.js";
+import {
+  omcc_failure_pattern_add,
+  omcc_failure_pattern_list,
+  omcc_failure_pattern_check,
+} from "./failure-patterns.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -193,6 +198,9 @@ export const TOOLS = {
   omcc_memory_recall,
   omcc_memory_search,
   omcc_route_model,
+  omcc_failure_pattern_add,
+  omcc_failure_pattern_list,
+  omcc_failure_pattern_check,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;
