@@ -3,6 +3,12 @@
 // easy to unit-test.
 
 import type { OmccDb } from "./db.js";
+import {
+  omcc_memory_layer_get,
+  omcc_memory_promote,
+  omcc_memory_demote,
+  omcc_memory_layer_add,
+} from "./memory-layers.js";
 
 export interface ToolResult {
   ok: boolean;
@@ -193,6 +199,10 @@ export const TOOLS = {
   omcc_memory_recall,
   omcc_memory_search,
   omcc_route_model,
+  omcc_memory_layer_get,
+  omcc_memory_promote,
+  omcc_memory_demote,
+  omcc_memory_layer_add,
 } as const;
 
 export type ToolName = keyof typeof TOOLS;

@@ -58,6 +58,17 @@ export function openDb(path: string): OmccDb {
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS memory_layers (
+      id          TEXT PRIMARY KEY,
+      level       INTEGER NOT NULL DEFAULT 3,
+      content     TEXT NOT NULL,
+      confidence  REAL DEFAULT 0.5,
+      category    TEXT,
+      created_at  TEXT DEFAULT (datetime('now')),
+      promoted_at TEXT,
+      source      TEXT
+    );
   `);
   return {
     raw: db,
